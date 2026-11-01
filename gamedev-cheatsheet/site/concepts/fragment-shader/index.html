@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fragment shader Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet</title>
+    <meta name="description" content="Use a fragment shader for surface patterns, dissolves, tinting, and effects that can be computed independently for each fragment. A fragment is a candidate pixel contribution; depth tests and blending determine the final image." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+
+    <meta name="google-site-verification" content="ywt33Tr3Vdd1dW8deBktVeFzcmp7OYgQj49ARpMsWlY" />
+    <meta property="og:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta property="og:image:alt" content="Game development concepts with interactive visual examples" />
+    <meta name="twitter:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta name="twitter:creator" content="@NicolasZu" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Fragment shader Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet" />
+    <meta property="og:description" content="Use a fragment shader for surface patterns, dissolves, tinting, and effects that can be computed independently for each fragment. A fragment is a candidate pixel contribution; depth tests and blending determine the final image." />
+    <link rel="canonical" href="https://gamedev-cheatsheet.com/concepts/fragment-shader/" />
+    <meta property="og:url" content="https://gamedev-cheatsheet.com/concepts/fragment-shader/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#07070b" />
+    <script type="module" crossorigin src="/assets/main-BnLIw7Rw.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="/assets/main-D-IG9H1k.css">
+  <link rel="preload" href="/assets/geist-latin-wght-normal-Dm3htQBi.woff2" as="font" type="font/woff2" crossorigin /><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Fragment shader in game development","description":"A fragment shader is a small program that the GPU runs once for every pixel a surface covers, to decide that pixel's colour. Each run gets its own inputs, such as the UV coordinate and the time, and thousands of runs happen in parallel. The magnifier in the demo shows the pixels as squares, each one the result of a separate run.","url":"https://gamedev-cheatsheet.com/concepts/fragment-shader/","image":"https://gamedev-cheatsheet.com/og.jpg","author":{"@type":"Person","name":"Nicolas Zullo","url":"https://gamedev-cheatsheet.com/about/"},"mainEntityOfPage":"https://gamedev-cheatsheet.com/concepts/fragment-shader/"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Game Dev Cheat Sheet","item":"https://gamedev-cheatsheet.com/"},{"@type":"ListItem","position":2,"name":"Fragment shader","item":"https://gamedev-cheatsheet.com/concepts/fragment-shader/"}]}]}</script></head>
+  <body>
+    <header class="bar">
+      <div class="bar__inner">
+        <a class="logo" href="/">
+          <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          Game dev cheat sheet
+        </a>
+        <nav class="bar__nav" id="nav" aria-label="Chapters"><a data-category="3d" href="/#chapter-3d">3D &amp; rendering</a><a data-category="feel" href="/#chapter-feel">Game feel</a><a data-category="systems" href="/#chapter-systems">Systems</a><a data-category="perf" href="/#chapter-perf">Performance</a></nav>
+        <a class="bar__link" href="/#newsletter">Get updates ↗</a>
+      </div>
+    </header>
+
+    <main class="concept-page"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Cheat sheet</a><span>›</span><a href="/#chapter-3d">3D &amp; rendering</a><span>›</span><span>Fragment shader</span></nav><header class="concept-heading"><p class="hero__kicker">3D &amp; rendering</p><h1>Fragment shader in game development</h1><p>a tiny program per pixel</p></header><div class="concept-layout"><div><article class="card card--detail" id="fragment-shader" data-slug="fragment-shader" data-module="fragment-shader.ts" data-category="3d"><div class="card__stage"><canvas role="img" aria-label="Fragment shader: a tiny program per pixel"></canvas><span class="demo-caption">Interactive example · scroll or point here to play</span></div><div class="card__body"><span class="card__num">05</span><p class="card__tagline">a tiny program per pixel</p><p class="card__text">A fragment shader is a small program that the GPU runs once for every pixel a surface covers, to decide that pixel&#39;s colour. Each run gets its own inputs, such as the UV coordinate and the time, and thousands of runs happen in parallel. The magnifier in the demo shows the pixels as squares, each one the result of a separate run.</p><div class="prompt"><div class="prompt__head"><span class="prompt__label">prompt bit</span><button type="button" class="prompt__copy" aria-label="Copy Fragment shader prompt">Copy</button></div><code class="prompt__code">Write this effect as a GLSL fragment shader: compute each pixel&#39;s colour from its UV and a uTime uniform, and expose speed, scale and colours as uniforms so they can be tuned without touching the shader code.</code></div></div></article></div><div class="concept-guide"><section><h2>When to use it</h2><p>Use a fragment shader for surface patterns, dissolves, tinting, and effects that can be computed independently for each fragment. A fragment is a candidate pixel contribution; depth tests and blending determine the final image.</p></section><section><h2>Implementation example</h2><p class="example-note">Engine-neutral pseudocode. Adapt the functions and coordinate conventions to your engine.</p><pre><code>vec2 uv = vUv;
+float wave = 0.5 + 0.5 * sin(uv.x * uScale + uTime);
+vec3 color = mix(uColorA, uColorB, wave);
+fragColor = vec4(color, 1.0);</code></pre></section><section><h2>Common mistakes</h2><p>A cheap-looking shader can become expensive when it covers the whole screen or is drawn many times. Check texture samples, transparency, and overdraw before adding more math.</p></section><section><h2>Further reading</h2><a href="https://threejs.org/manual/" target="_blank" rel="noopener noreferrer">Three.js manual ↗</a></section></div></div><section class="related"><h2>Related concepts</h2><div><a href="/concepts/normals/"><strong>Normals</strong><span>which way a surface faces</span></a><a href="/concepts/overdraw/"><strong>Overdraw</strong><span>the same pixel, shaded again</span></a><a href="/concepts/texture-atlas/"><strong>Texture atlas</strong><span>one texture, one draw call</span></a></div></section><p class="byline">Maintained by <a href="/about/">Nicolas Zullo</a> · <a href="https://x.com/NicolasZu" data-track="follow_x" target="_blank" rel="noopener noreferrer">Follow on X ↗</a></p></main>
+
+    <footer class="site-footer"><div><strong>Keep learning with Nicolas</strong><p>New concepts, visual explanations, and game development notes.</p><a class="follow-link" data-track="follow_x" href="https://x.com/NicolasZu" target="_blank" rel="noopener noreferrer">Follow @NicolasZu on X ↗</a></div><nav aria-label="Site information"><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/#newsletter">Email updates</a><a href="/#top">Back to top ↑</a></nav></footer>
+  </body>
+</html>

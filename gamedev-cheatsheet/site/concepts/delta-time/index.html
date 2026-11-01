@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delta time Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet</title>
+    <meta name="description" content="Use elapsed seconds for movement speeds, cooldowns, and UI animation. A value in units per second needs one multiplication by elapsed seconds to become a displacement." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+
+    <meta name="google-site-verification" content="ywt33Tr3Vdd1dW8deBktVeFzcmp7OYgQj49ARpMsWlY" />
+    <meta property="og:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta property="og:image:alt" content="Game development concepts with interactive visual examples" />
+    <meta name="twitter:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta name="twitter:creator" content="@NicolasZu" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Delta time Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet" />
+    <meta property="og:description" content="Use elapsed seconds for movement speeds, cooldowns, and UI animation. A value in units per second needs one multiplication by elapsed seconds to become a displacement." />
+    <link rel="canonical" href="https://gamedev-cheatsheet.com/concepts/delta-time/" />
+    <meta property="og:url" content="https://gamedev-cheatsheet.com/concepts/delta-time/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#07070b" />
+    <script type="module" crossorigin src="/assets/main-BnLIw7Rw.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="/assets/main-D-IG9H1k.css">
+  <link rel="preload" href="/assets/geist-latin-wght-normal-Dm3htQBi.woff2" as="font" type="font/woff2" crossorigin /><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Delta time in game development","description":"Delta time is how long the previous frame took, in seconds. Multiply every speed by it and the game runs at the same pace at 30 fps and at 240 fps. Here the frame rate dips from 60 to 14 fps, and the racer that moves a fixed amount per frame falls behind.","url":"https://gamedev-cheatsheet.com/concepts/delta-time/","image":"https://gamedev-cheatsheet.com/og.jpg","author":{"@type":"Person","name":"Nicolas Zullo","url":"https://gamedev-cheatsheet.com/about/"},"mainEntityOfPage":"https://gamedev-cheatsheet.com/concepts/delta-time/"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Game Dev Cheat Sheet","item":"https://gamedev-cheatsheet.com/"},{"@type":"ListItem","position":2,"name":"Delta time","item":"https://gamedev-cheatsheet.com/concepts/delta-time/"}]}]}</script></head>
+  <body>
+    <header class="bar">
+      <div class="bar__inner">
+        <a class="logo" href="/">
+          <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          Game dev cheat sheet
+        </a>
+        <nav class="bar__nav" id="nav" aria-label="Chapters"><a data-category="3d" href="/#chapter-3d">3D &amp; rendering</a><a data-category="feel" href="/#chapter-feel">Game feel</a><a data-category="systems" href="/#chapter-systems">Systems</a><a data-category="perf" href="/#chapter-perf">Performance</a></nav>
+        <a class="bar__link" href="/#newsletter">Get updates ↗</a>
+      </div>
+    </header>
+
+    <main class="concept-page"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Cheat sheet</a><span>›</span><a href="/#chapter-feel">Game feel</a><span>›</span><span>Delta time</span></nav><header class="concept-heading"><p class="hero__kicker">Game feel</p><h1>Delta time in game development</h1><p>move per second, not per frame</p></header><div class="concept-layout"><div><article class="card card--detail" id="delta-time" data-slug="delta-time" data-module="delta-time.ts" data-category="feel"><div class="card__stage"><canvas role="img" aria-label="Delta time: move per second, not per frame"></canvas><span class="demo-caption">Interactive example · scroll or point here to play</span></div><div class="card__body"><span class="card__num">09</span><p class="card__tagline">move per second, not per frame</p><p class="card__text">Delta time is how long the previous frame took, in seconds. Multiply every speed by it and the game runs at the same pace at 30 fps and at 240 fps. Here the frame rate dips from 60 to 14 fps, and the racer that moves a fixed amount per frame falls behind.</p><div class="prompt"><div class="prompt__head"><span class="prompt__label">prompt bit</span><button type="button" class="prompt__copy" aria-label="Copy Delta time prompt">Copy</button></div><code class="prompt__code">Make all movement frame-rate independent with delta time: multiply every speed by dt in seconds, add dt to every timer, smooth with 1 - exp(-k * dt) instead of a fixed lerp factor, and clamp dt to about 0.05 s so one long frame cannot teleport anything.</code></div></div></article></div><div class="concept-guide"><section><h2>When to use it</h2><p>Use elapsed seconds for movement speeds, cooldowns, and UI animation. A value in units per second needs one multiplication by elapsed seconds to become a displacement.</p></section><section><h2>Implementation example</h2><p class="example-note">Engine-neutral pseudocode. Adapt the functions and coordinate conventions to your engine.</p><pre><code>dt = min(frameSeconds, 0.05)
+position += velocity * dt
+cooldown = max(0, cooldown - dt)
+blend = 1 - exp(-smoothing * dt)</code></pre></section><section><h2>Common mistakes</h2><p>Do not multiply by delta time twice. Clamping a long frame discards elapsed time, so fixed-step accumulation is a better fit for simulations that must account for that time.</p></section><section><h2>Further reading</h2><a href="https://gafferongames.com/post/fix_your_timestep/" target="_blank" rel="noopener noreferrer">Gaffer On Games: Fix Your Timestep ↗</a></section></div></div><section class="related"><h2>Related concepts</h2><div><a href="/concepts/fixed-timestep/"><strong>Fixed timestep</strong><span>physics on a steady clock</span></a><a href="/concepts/acceleration-and-friction/"><strong>Acceleration and friction</strong><span>speed builds up and bleeds off</span></a><a href="/concepts/easing/"><strong>Easing</strong><span>bend linear motion into curves</span></a></div></section><p class="byline">Maintained by <a href="/about/">Nicolas Zullo</a> · <a href="https://x.com/NicolasZu" data-track="follow_x" target="_blank" rel="noopener noreferrer">Follow on X ↗</a></p></main>
+
+    <footer class="site-footer"><div><strong>Keep learning with Nicolas</strong><p>New concepts, visual explanations, and game development notes.</p><a class="follow-link" data-track="follow_x" href="https://x.com/NicolasZu" target="_blank" rel="noopener noreferrer">Follow @NicolasZu on X ↗</a></div><nav aria-label="Site information"><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/#newsletter">Email updates</a><a href="/#top">Back to top ↑</a></nav></footer>
+  </body>
+</html>

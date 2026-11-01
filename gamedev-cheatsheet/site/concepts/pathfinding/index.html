@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A* pathfinding Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet</title>
+    <meta name="description" content="Use A* when a unit needs a route through a graph of traversable positions. The graph handles where travel is possible; a separate movement controller follows the resulting route." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+
+    <meta name="google-site-verification" content="ywt33Tr3Vdd1dW8deBktVeFzcmp7OYgQj49ARpMsWlY" />
+    <meta property="og:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta property="og:image:alt" content="Game development concepts with interactive visual examples" />
+    <meta name="twitter:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta name="twitter:creator" content="@NicolasZu" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="A* pathfinding Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet" />
+    <meta property="og:description" content="Use A* when a unit needs a route through a graph of traversable positions. The graph handles where travel is possible; a separate movement controller follows the resulting route." />
+    <link rel="canonical" href="https://gamedev-cheatsheet.com/concepts/pathfinding/" />
+    <meta property="og:url" content="https://gamedev-cheatsheet.com/concepts/pathfinding/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#07070b" />
+    <script type="module" crossorigin src="/assets/main-BnLIw7Rw.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="/assets/main-D-IG9H1k.css">
+  <link rel="preload" href="/assets/geist-latin-wght-normal-Dm3htQBi.woff2" as="font" type="font/woff2" crossorigin /><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"A* pathfinding in game development","description":"A* searches a grid by always expanding the tile with the lowest cost so far plus an estimate of the distance left. The estimate steers the search towards the goal, so in this maze it expands about 40% fewer tiles than a blind search. As long as the estimate never overestimates, the path it returns is still the shortest.","url":"https://gamedev-cheatsheet.com/concepts/pathfinding/","image":"https://gamedev-cheatsheet.com/og.jpg","author":{"@type":"Person","name":"Nicolas Zullo","url":"https://gamedev-cheatsheet.com/about/"},"mainEntityOfPage":"https://gamedev-cheatsheet.com/concepts/pathfinding/"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Game Dev Cheat Sheet","item":"https://gamedev-cheatsheet.com/"},{"@type":"ListItem","position":2,"name":"A* pathfinding","item":"https://gamedev-cheatsheet.com/concepts/pathfinding/"}]}]}</script></head>
+  <body>
+    <header class="bar">
+      <div class="bar__inner">
+        <a class="logo" href="/">
+          <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          Game dev cheat sheet
+        </a>
+        <nav class="bar__nav" id="nav" aria-label="Chapters"><a data-category="3d" href="/#chapter-3d">3D &amp; rendering</a><a data-category="feel" href="/#chapter-feel">Game feel</a><a data-category="systems" href="/#chapter-systems">Systems</a><a data-category="perf" href="/#chapter-perf">Performance</a></nav>
+        <a class="bar__link" href="/#newsletter">Get updates ↗</a>
+      </div>
+    </header>
+
+    <main class="concept-page"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Cheat sheet</a><span>›</span><a href="/#chapter-systems">Systems</a><span>›</span><span>A* pathfinding</span></nav><header class="concept-heading"><p class="hero__kicker">Systems</p><h1>A* pathfinding in game development</h1><p>search that aims at the goal</p></header><div class="concept-layout"><div><article class="card card--detail" id="pathfinding" data-slug="pathfinding" data-module="pathfinding.ts" data-category="systems"><div class="card__stage"><canvas role="img" aria-label="A* pathfinding: search that aims at the goal"></canvas><span class="demo-caption">Interactive example · scroll or point here to play</span></div><div class="card__body"><span class="card__num">22</span><p class="card__tagline">search that aims at the goal</p><p class="card__text">A* searches a grid by always expanding the tile with the lowest cost so far plus an estimate of the distance left. The estimate steers the search towards the goal, so in this maze it expands about 40% fewer tiles than a blind search. As long as the estimate never overestimates, the path it returns is still the shortest.</p><div class="prompt"><div class="prompt__head"><span class="prompt__label">prompt bit</span><button type="button" class="prompt__copy" aria-label="Copy A* pathfinding prompt">Copy</button></div><code class="prompt__code">Use A* on the navigation grid with a binary heap for the open set, g as the cost so far, a Manhattan heuristic for 4-way movement or octile for 8-way, ties on f broken towards lower h, and the path rebuilt from parent links when the goal is popped.</code></div></div></article></div><div class="concept-guide"><section><h2>When to use it</h2><p>Use A* when a unit needs a route through a graph of traversable positions. The graph handles where travel is possible; a separate movement controller follows the resulting route.</p></section><section><h2>Implementation example</h2><p class="example-note">Engine-neutral pseudocode. Adapt the functions and coordinate conventions to your engine.</p><pre><code>open.push(start, priority = 0)
+while open is not empty:
+  current = open.popLowest()
+  if current == goal: return reconstructPath(current)
+  for next in neighbors(current):
+    relaxEdge(current, next, cost + heuristic(next, goal))</code></pre></section><section><h2>Common mistakes</h2><p>The heuristic must not overestimate remaining cost for the usual shortest-path guarantee. Match it to allowed movement, and prevent diagonal corner cutting if a unit cannot fit through that gap.</p></section><section><h2>Further reading</h2><a href="https://www.redblobgames.com/pathfinding/a-star/introduction.html" target="_blank" rel="noopener noreferrer">Red Blob Games: Introduction to A* ↗</a></section></div></div><section class="related"><h2>Related concepts</h2><div><a href="/concepts/steering-behaviors/"><strong>Steering behaviors</strong><span>nudge velocity toward a goal</span></a><a href="/concepts/spatial-partitioning/"><strong>Spatial partitioning</strong><span>only test what is nearby</span></a><a href="/concepts/time-slicing/"><strong>Time slicing</strong><span>spread the work across frames</span></a></div></section><p class="byline">Maintained by <a href="/about/">Nicolas Zullo</a> · <a href="https://x.com/NicolasZu" data-track="follow_x" target="_blank" rel="noopener noreferrer">Follow on X ↗</a></p></main>
+
+    <footer class="site-footer"><div><strong>Keep learning with Nicolas</strong><p>New concepts, visual explanations, and game development notes.</p><a class="follow-link" data-track="follow_x" href="https://x.com/NicolasZu" target="_blank" rel="noopener noreferrer">Follow @NicolasZu on X ↗</a></div><nav aria-label="Site information"><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/#newsletter">Email updates</a><a href="/#top">Back to top ↑</a></nav></footer>
+  </body>
+</html>

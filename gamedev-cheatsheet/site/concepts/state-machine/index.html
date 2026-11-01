@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Finite state machine Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet</title>
+    <meta name="description" content="Use a state machine when behavior has distinct modes and clear transitions. An explicit transition table makes it easier to see whether jumping, attacking, or taking damage is permitted." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+
+    <meta name="google-site-verification" content="ywt33Tr3Vdd1dW8deBktVeFzcmp7OYgQj49ARpMsWlY" />
+    <meta property="og:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta property="og:image:alt" content="Game development concepts with interactive visual examples" />
+    <meta name="twitter:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta name="twitter:creator" content="@NicolasZu" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Finite state machine Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet" />
+    <meta property="og:description" content="Use a state machine when behavior has distinct modes and clear transitions. An explicit transition table makes it easier to see whether jumping, attacking, or taking damage is permitted." />
+    <link rel="canonical" href="https://gamedev-cheatsheet.com/concepts/state-machine/" />
+    <meta property="og:url" content="https://gamedev-cheatsheet.com/concepts/state-machine/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#07070b" />
+    <script type="module" crossorigin src="/assets/main-BnLIw7Rw.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="/assets/main-D-IG9H1k.css">
+  <link rel="preload" href="/assets/geist-latin-wght-normal-Dm3htQBi.woff2" as="font" type="font/woff2" crossorigin /><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Finite state machine in game development","description":"A finite state machine keeps a character in exactly one state and lists which events move it to which state. An event with no matching transition is ignored, like the attack pressed in mid air here. This replaces a pile of booleans like isJumping and isAttacking that can end up true at the same time.","url":"https://gamedev-cheatsheet.com/concepts/state-machine/","image":"https://gamedev-cheatsheet.com/og.jpg","author":{"@type":"Person","name":"Nicolas Zullo","url":"https://gamedev-cheatsheet.com/about/"},"mainEntityOfPage":"https://gamedev-cheatsheet.com/concepts/state-machine/"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Game Dev Cheat Sheet","item":"https://gamedev-cheatsheet.com/"},{"@type":"ListItem","position":2,"name":"Finite state machine","item":"https://gamedev-cheatsheet.com/concepts/state-machine/"}]}]}</script></head>
+  <body>
+    <header class="bar">
+      <div class="bar__inner">
+        <a class="logo" href="/">
+          <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          Game dev cheat sheet
+        </a>
+        <nav class="bar__nav" id="nav" aria-label="Chapters"><a data-category="3d" href="/#chapter-3d">3D &amp; rendering</a><a data-category="feel" href="/#chapter-feel">Game feel</a><a data-category="systems" href="/#chapter-systems">Systems</a><a data-category="perf" href="/#chapter-perf">Performance</a></nav>
+        <a class="bar__link" href="/#newsletter">Get updates ↗</a>
+      </div>
+    </header>
+
+    <main class="concept-page"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Cheat sheet</a><span>›</span><a href="/#chapter-systems">Systems</a><span>›</span><span>Finite state machine</span></nav><header class="concept-heading"><p class="hero__kicker">Systems</p><h1>Finite state machine in game development</h1><p>one state at a time</p></header><div class="concept-layout"><div><article class="card card--detail" id="state-machine" data-slug="state-machine" data-module="state-machine.ts" data-category="systems"><div class="card__stage"><canvas role="img" aria-label="Finite state machine: one state at a time"></canvas><span class="demo-caption">Interactive example · scroll or point here to play</span></div><div class="card__body"><span class="card__num">20</span><p class="card__tagline">one state at a time</p><p class="card__text">A finite state machine keeps a character in exactly one state and lists which events move it to which state. An event with no matching transition is ignored, like the attack pressed in mid air here. This replaces a pile of booleans like isJumping and isAttacking that can end up true at the same time.</p><div class="prompt"><div class="prompt__head"><span class="prompt__label">prompt bit</span><button type="button" class="prompt__copy" aria-label="Copy Finite state machine prompt">Copy</button></div><code class="prompt__code">Model the character with a finite state machine: one active state at a time, an explicit transition table keyed by state and event, events with no entry ignored, and enter, update and exit hooks on each state.</code></div></div></article></div><div class="concept-guide"><section><h2>When to use it</h2><p>Use a state machine when behavior has distinct modes and clear transitions. An explicit transition table makes it easier to see whether jumping, attacking, or taking damage is permitted.</p></section><section><h2>Implementation example</h2><p class="example-note">Engine-neutral pseudocode. Adapt the functions and coordinate conventions to your engine.</p><pre><code>next = transitions[currentState].get(event)
+if next exists:
+  states[currentState].exit()
+  currentState = next
+  states[currentState].enter()</code></pre></section><section><h2>Common mistakes</h2><p>Do not hide important transitions in unrelated flags. When movement and weapon states are independent, use separate state machines or a hierarchy instead of enumerating every possible combination.</p></section></div></div><section class="related"><h2>Related concepts</h2><div><a href="/concepts/input-buffering/"><strong>Input buffering</strong><span>an early press that still counts</span></a><a href="/concepts/invincibility-frames/"><strong>Invincibility frames</strong><span>brief safety after each hit</span></a><a href="/concepts/steering-behaviors/"><strong>Steering behaviors</strong><span>nudge velocity toward a goal</span></a></div></section><p class="byline">Maintained by <a href="/about/">Nicolas Zullo</a> · <a href="https://x.com/NicolasZu" data-track="follow_x" target="_blank" rel="noopener noreferrer">Follow on X ↗</a></p></main>
+
+    <footer class="site-footer"><div><strong>Keep learning with Nicolas</strong><p>New concepts, visual explanations, and game development notes.</p><a class="follow-link" data-track="follow_x" href="https://x.com/NicolasZu" target="_blank" rel="noopener noreferrer">Follow @NicolasZu on X ↗</a></div><nav aria-label="Site information"><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/#newsletter">Email updates</a><a href="/#top">Back to top ↑</a></nav></footer>
+  </body>
+</html>

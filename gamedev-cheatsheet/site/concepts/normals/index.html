@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Normals Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet</title>
+    <meta name="description" content="Use a surface normal to calculate lighting, orient a decal, reflect a projectile, or decide whether a slope counts as ground. Keep the normal and the vectors you compare it with in the same coordinate space." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+
+    <meta name="google-site-verification" content="ywt33Tr3Vdd1dW8deBktVeFzcmp7OYgQj49ARpMsWlY" />
+    <meta property="og:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta property="og:image:alt" content="Game development concepts with interactive visual examples" />
+    <meta name="twitter:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta name="twitter:creator" content="@NicolasZu" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Normals Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet" />
+    <meta property="og:description" content="Use a surface normal to calculate lighting, orient a decal, reflect a projectile, or decide whether a slope counts as ground. Keep the normal and the vectors you compare it with in the same coordinate space." />
+    <link rel="canonical" href="https://gamedev-cheatsheet.com/concepts/normals/" />
+    <meta property="og:url" content="https://gamedev-cheatsheet.com/concepts/normals/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#07070b" />
+    <script type="module" crossorigin src="/assets/main-BnLIw7Rw.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="/assets/main-D-IG9H1k.css">
+  <link rel="preload" href="/assets/geist-latin-wght-normal-Dm3htQBi.woff2" as="font" type="font/woff2" crossorigin /><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Normals in game development","description":"A normal is a unit vector that points straight out of a surface. Lighting compares it with the direction to the light, so in the demo the faces whose normal lines point at the bulb are bright. Gameplay code uses the same vector to bounce objects off walls and to tell a floor from a steep slope.","url":"https://gamedev-cheatsheet.com/concepts/normals/","image":"https://gamedev-cheatsheet.com/og.jpg","author":{"@type":"Person","name":"Nicolas Zullo","url":"https://gamedev-cheatsheet.com/about/"},"mainEntityOfPage":"https://gamedev-cheatsheet.com/concepts/normals/"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Game Dev Cheat Sheet","item":"https://gamedev-cheatsheet.com/"},{"@type":"ListItem","position":2,"name":"Normals","item":"https://gamedev-cheatsheet.com/concepts/normals/"}]}]}</script></head>
+  <body>
+    <header class="bar">
+      <div class="bar__inner">
+        <a class="logo" href="/">
+          <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          Game dev cheat sheet
+        </a>
+        <nav class="bar__nav" id="nav" aria-label="Chapters"><a data-category="3d" href="/#chapter-3d">3D &amp; rendering</a><a data-category="feel" href="/#chapter-feel">Game feel</a><a data-category="systems" href="/#chapter-systems">Systems</a><a data-category="perf" href="/#chapter-perf">Performance</a></nav>
+        <a class="bar__link" href="/#newsletter">Get updates ↗</a>
+      </div>
+    </header>
+
+    <main class="concept-page"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Cheat sheet</a><span>›</span><a href="/#chapter-3d">3D &amp; rendering</a><span>›</span><span>Normals</span></nav><header class="concept-heading"><p class="hero__kicker">3D &amp; rendering</p><h1>Normals in game development</h1><p>which way a surface faces</p></header><div class="concept-layout"><div><article class="card card--detail" id="normals" data-slug="normals" data-module="normals.ts" data-category="3d"><div class="card__stage"><canvas role="img" aria-label="Normals: which way a surface faces"></canvas><span class="demo-caption">Interactive example · scroll or point here to play</span></div><div class="card__body"><span class="card__num">02</span><p class="card__tagline">which way a surface faces</p><p class="card__text">A normal is a unit vector that points straight out of a surface. Lighting compares it with the direction to the light, so in the demo the faces whose normal lines point at the bulb are bright. Gameplay code uses the same vector to bounce objects off walls and to tell a floor from a steep slope.</p><div class="prompt"><div class="prompt__head"><span class="prompt__label">prompt bit</span><button type="button" class="prompt__copy" aria-label="Copy Normals prompt">Copy</button></div><code class="prompt__code">Use the surface normal from each collision or raycast hit: reflect the velocity around it for bounces, and count a surface as walkable floor only when the normal&#39;s up component is above 0.7, which is about 45 degrees.</code></div></div></article></div><div class="concept-guide"><section><h2>When to use it</h2><p>Use a surface normal to calculate lighting, orient a decal, reflect a projectile, or decide whether a slope counts as ground. Keep the normal and the vectors you compare it with in the same coordinate space.</p></section><section><h2>Implementation example</h2><p class="example-note">Engine-neutral pseudocode. Adapt the functions and coordinate conventions to your engine.</p><pre><code>normal = normalize(hit.worldNormal)
+walkable = dot(normal, worldUp) &gt;= cos(maxSlopeAngle)
+bounce = velocity - 2 * dot(velocity, normal) * normal</code></pre></section><section><h2>Common mistakes</h2><p>A position vector is not a normal. Under non-uniform scale, transform normals with the inverse-transpose normal matrix, then normalize them again.</p></section><section><h2>Further reading</h2><a href="https://threejs.org/manual/" target="_blank" rel="noopener noreferrer">Three.js manual ↗</a></section></div></div><section class="related"><h2>Related concepts</h2><div><a href="/concepts/raycasting/"><strong>Raycasting</strong><span>ask a line what it hits</span></a><a href="/concepts/fragment-shader/"><strong>Fragment shader</strong><span>a tiny program per pixel</span></a><a href="/concepts/z-fighting/"><strong>Z-fighting</strong><span>two surfaces fighting for pixels</span></a></div></section><p class="byline">Maintained by <a href="/about/">Nicolas Zullo</a> · <a href="https://x.com/NicolasZu" data-track="follow_x" target="_blank" rel="noopener noreferrer">Follow on X ↗</a></p></main>
+
+    <footer class="site-footer"><div><strong>Keep learning with Nicolas</strong><p>New concepts, visual explanations, and game development notes.</p><a class="follow-link" data-track="follow_x" href="https://x.com/NicolasZu" target="_blank" rel="noopener noreferrer">Follow @NicolasZu on X ↗</a></div><nav aria-label="Site information"><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/#newsletter">Email updates</a><a href="/#top">Back to top ↑</a></nav></footer>
+  </body>
+</html>

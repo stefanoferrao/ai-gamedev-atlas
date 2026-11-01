@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tunneling Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet</title>
+    <meta name="description" content="Use swept collision detection for objects that can travel farther than a thin obstacle in one tick. A ray represents a point projectile; a sphere or capsule sweep represents an object with volume." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+
+    <meta name="google-site-verification" content="ywt33Tr3Vdd1dW8deBktVeFzcmp7OYgQj49ARpMsWlY" />
+    <meta property="og:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta property="og:image:alt" content="Game development concepts with interactive visual examples" />
+    <meta name="twitter:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta name="twitter:creator" content="@NicolasZu" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Tunneling Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet" />
+    <meta property="og:description" content="Use swept collision detection for objects that can travel farther than a thin obstacle in one tick. A ray represents a point projectile; a sphere or capsule sweep represents an object with volume." />
+    <link rel="canonical" href="https://gamedev-cheatsheet.com/concepts/tunneling/" />
+    <meta property="og:url" content="https://gamedev-cheatsheet.com/concepts/tunneling/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#07070b" />
+    <script type="module" crossorigin src="/assets/main-BnLIw7Rw.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="/assets/main-D-IG9H1k.css">
+  <link rel="preload" href="/assets/geist-latin-wght-normal-Dm3htQBi.woff2" as="font" type="font/woff2" crossorigin /><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Tunneling in game development","description":"Tunneling happens when an object moves so far in one frame that it is in front of a wall before the step and behind it after, so a per frame overlap test never sees them touch. Here the bullet moves about 40 px per frame against a 6 px wall, and each dot marks one frame, slowed down. The top lane tests overlap only at the dots and lets the bullet through, while the bottom lane tests the whole segment between two dots and stops it at the wall.","url":"https://gamedev-cheatsheet.com/concepts/tunneling/","image":"https://gamedev-cheatsheet.com/og.jpg","author":{"@type":"Person","name":"Nicolas Zullo","url":"https://gamedev-cheatsheet.com/about/"},"mainEntityOfPage":"https://gamedev-cheatsheet.com/concepts/tunneling/"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Game Dev Cheat Sheet","item":"https://gamedev-cheatsheet.com/"},{"@type":"ListItem","position":2,"name":"Tunneling","item":"https://gamedev-cheatsheet.com/concepts/tunneling/"}]}]}</script></head>
+  <body>
+    <header class="bar">
+      <div class="bar__inner">
+        <a class="logo" href="/">
+          <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          Game dev cheat sheet
+        </a>
+        <nav class="bar__nav" id="nav" aria-label="Chapters"><a data-category="3d" href="/#chapter-3d">3D &amp; rendering</a><a data-category="feel" href="/#chapter-feel">Game feel</a><a data-category="systems" href="/#chapter-systems">Systems</a><a data-category="perf" href="/#chapter-perf">Performance</a></nav>
+        <a class="bar__link" href="/#newsletter">Get updates ↗</a>
+      </div>
+    </header>
+
+    <main class="concept-page"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Cheat sheet</a><span>›</span><a href="/#chapter-systems">Systems</a><span>›</span><span>Tunneling</span></nav><header class="concept-heading"><p class="hero__kicker">Systems</p><h1>Tunneling in game development</h1><p>fast objects skip through walls</p></header><div class="concept-layout"><div><article class="card card--detail" id="tunneling" data-slug="tunneling" data-module="tunneling.ts" data-category="systems"><div class="card__stage"><canvas role="img" aria-label="Tunneling: fast objects skip through walls"></canvas><span class="demo-caption">Interactive example · scroll or point here to play</span></div><div class="card__body"><span class="card__num">26</span><p class="card__tagline">fast objects skip through walls</p><p class="card__text">Tunneling happens when an object moves so far in one frame that it is in front of a wall before the step and behind it after, so a per frame overlap test never sees them touch. Here the bullet moves about 40 px per frame against a 6 px wall, and each dot marks one frame, slowed down. The top lane tests overlap only at the dots and lets the bullet through, while the bottom lane tests the whole segment between two dots and stops it at the wall.</p><div class="prompt"><div class="prompt__head"><span class="prompt__label">prompt bit</span><button type="button" class="prompt__copy" aria-label="Copy Tunneling prompt">Copy</button></div><code class="prompt__code">For fast objects like bullets, test the swept path from last frame&#39;s position to the new one with a raycast or shape cast, or sub-step the physics so each step moves less than half the object&#39;s size, and turn on continuous collision detection for fast rigidbodies.</code></div></div></article></div><div class="concept-guide"><section><h2>When to use it</h2><p>Use swept collision detection for objects that can travel farther than a thin obstacle in one tick. A ray represents a point projectile; a sphere or capsule sweep represents an object with volume.</p></section><section><h2>Implementation example</h2><p class="example-note">Engine-neutral pseudocode. Adapt the functions and coordinate conventions to your engine.</p><pre><code>next = position + velocity * dt
+hit = sweepShape(shape, position, next)
+if hit:
+  position = hit.safePosition
+  resolveImpact(hit)
+else: position = next</code></pre></section><section><h2>Common mistakes</h2><p>Increasing render FPS does not fix a physics system that still samples at a low rate. Choose continuous collision detection or substeps according to the object’s speed, size, and collision needs.</p></section></div></div><section class="related"><h2>Related concepts</h2><div><a href="/concepts/raycasting/"><strong>Raycasting</strong><span>ask a line what it hits</span></a><a href="/concepts/fixed-timestep/"><strong>Fixed timestep</strong><span>physics on a steady clock</span></a><a href="/concepts/hitbox-hurtbox/"><strong>Hitbox and hurtbox</strong><span>what hits, what gets hit</span></a></div></section><p class="byline">Maintained by <a href="/about/">Nicolas Zullo</a> · <a href="https://x.com/NicolasZu" data-track="follow_x" target="_blank" rel="noopener noreferrer">Follow on X ↗</a></p></main>
+
+    <footer class="site-footer"><div><strong>Keep learning with Nicolas</strong><p>New concepts, visual explanations, and game development notes.</p><a class="follow-link" data-track="follow_x" href="https://x.com/NicolasZu" target="_blank" rel="noopener noreferrer">Follow @NicolasZu on X ↗</a></div><nav aria-label="Site information"><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/#newsletter">Email updates</a><a href="/#top">Back to top ↑</a></nav></footer>
+  </body>
+</html>

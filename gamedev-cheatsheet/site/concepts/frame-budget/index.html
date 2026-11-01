@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frame budget Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet</title>
+    <meta name="description" content="Use per-system timings to find which work exceeds the target frame duration. Measure representative heavy scenes and slow frames, not only the average FPS in an empty level." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+
+    <meta name="google-site-verification" content="ywt33Tr3Vdd1dW8deBktVeFzcmp7OYgQj49ARpMsWlY" />
+    <meta property="og:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta property="og:image:alt" content="Game development concepts with interactive visual examples" />
+    <meta name="twitter:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta name="twitter:creator" content="@NicolasZu" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Frame budget Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet" />
+    <meta property="og:description" content="Use per-system timings to find which work exceeds the target frame duration. Measure representative heavy scenes and slow frames, not only the average FPS in an empty level." />
+    <link rel="canonical" href="https://gamedev-cheatsheet.com/concepts/frame-budget/" />
+    <meta property="og:url" content="https://gamedev-cheatsheet.com/concepts/frame-budget/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#07070b" />
+    <script type="module" crossorigin src="/assets/main-BnLIw7Rw.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="/assets/main-D-IG9H1k.css">
+  <link rel="preload" href="/assets/geist-latin-wght-normal-Dm3htQBi.woff2" as="font" type="font/woff2" crossorigin /><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Frame budget in game development","description":"At 60 fps the game has 16.67 milliseconds to finish each frame, and input, game logic, physics and rendering all share that time. A frame that takes longer misses the screen refresh, and the player sees a stutter. Measure how long each system takes and fix the largest one first, like the physics spikes that push frames over the red line here.","url":"https://gamedev-cheatsheet.com/concepts/frame-budget/","image":"https://gamedev-cheatsheet.com/og.jpg","author":{"@type":"Person","name":"Nicolas Zullo","url":"https://gamedev-cheatsheet.com/about/"},"mainEntityOfPage":"https://gamedev-cheatsheet.com/concepts/frame-budget/"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Game Dev Cheat Sheet","item":"https://gamedev-cheatsheet.com/"},{"@type":"ListItem","position":2,"name":"Frame budget","item":"https://gamedev-cheatsheet.com/concepts/frame-budget/"}]}]}</script></head>
+  <body>
+    <header class="bar">
+      <div class="bar__inner">
+        <a class="logo" href="/">
+          <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          Game dev cheat sheet
+        </a>
+        <nav class="bar__nav" id="nav" aria-label="Chapters"><a data-category="3d" href="/#chapter-3d">3D &amp; rendering</a><a data-category="feel" href="/#chapter-feel">Game feel</a><a data-category="systems" href="/#chapter-systems">Systems</a><a data-category="perf" href="/#chapter-perf">Performance</a></nav>
+        <a class="bar__link" href="/#newsletter">Get updates ↗</a>
+      </div>
+    </header>
+
+    <main class="concept-page"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Cheat sheet</a><span>›</span><a href="/#chapter-perf">Performance</a><span>›</span><span>Frame budget</span></nav><header class="concept-heading"><p class="hero__kicker">Performance</p><h1>Frame budget in game development</h1><p>16.67 ms, and where it goes</p></header><div class="concept-layout"><div><article class="card card--detail" id="frame-budget" data-slug="frame-budget" data-module="frame-budget.ts" data-category="perf"><div class="card__stage"><canvas role="img" aria-label="Frame budget: 16.67 ms, and where it goes"></canvas><span class="demo-caption">Interactive example · scroll or point here to play</span></div><div class="card__body"><span class="card__num">28</span><p class="card__tagline">16.67 ms, and where it goes</p><p class="card__text">At 60 fps the game has 16.67 milliseconds to finish each frame, and input, game logic, physics and rendering all share that time. A frame that takes longer misses the screen refresh, and the player sees a stutter. Measure how long each system takes and fix the largest one first, like the physics spikes that push frames over the red line here.</p><div class="prompt"><div class="prompt__head"><span class="prompt__label">prompt bit</span><button type="button" class="prompt__copy" aria-label="Copy Frame budget prompt">Copy</button></div><code class="prompt__code">Before optimising, time input, update, physics and render every frame with performance.now(), show each one in milliseconds against the 16.67 ms budget for 60 fps, and optimise the largest one first.</code></div></div></article></div><div class="concept-guide"><section><h2>When to use it</h2><p>Use per-system timings to find which work exceeds the target frame duration. Measure representative heavy scenes and slow frames, not only the average FPS in an empty level.</p></section><section><h2>Implementation example</h2><p class="example-note">Engine-neutral pseudocode. Adapt the functions and coordinate conventions to your engine.</p><pre><code>start = now()
+updateSimulation()
+simulationMs = now() - start
+start = now()
+submitRendering()
+renderSubmissionMs = now() - start</code></pre></section><section><h2>Common mistakes</h2><p>CPU submission time is not GPU execution time. Use GPU timings when available, inspect high-percentile frame times, and compare the same scene before and after an optimization.</p></section></div></div><section class="related"><h2>Related concepts</h2><div><a href="/concepts/draw-calls/"><strong>Draw calls</strong><span>one call, four hundred crates</span></a><a href="/concepts/overdraw/"><strong>Overdraw</strong><span>the same pixel, shaded again</span></a><a href="/concepts/time-slicing/"><strong>Time slicing</strong><span>spread the work across frames</span></a></div></section><p class="byline">Maintained by <a href="/about/">Nicolas Zullo</a> · <a href="https://x.com/NicolasZu" data-track="follow_x" target="_blank" rel="noopener noreferrer">Follow on X ↗</a></p></main>
+
+    <footer class="site-footer"><div><strong>Keep learning with Nicolas</strong><p>New concepts, visual explanations, and game development notes.</p><a class="follow-link" data-track="follow_x" href="https://x.com/NicolasZu" target="_blank" rel="noopener noreferrer">Follow @NicolasZu on X ↗</a></div><nav aria-label="Site information"><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/#newsletter">Email updates</a><a href="/#top">Back to top ↑</a></nav></footer>
+  </body>
+</html>

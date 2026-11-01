@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seeded noise Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet</title>
+    <meta name="description" content="Use a seeded generator for worlds that should rebuild from a small seed. Smooth noise gives nearby coordinates related values, while independent random samples create abrupt changes." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+
+    <meta name="google-site-verification" content="ywt33Tr3Vdd1dW8deBktVeFzcmp7OYgQj49ARpMsWlY" />
+    <meta property="og:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta property="og:image:alt" content="Game development concepts with interactive visual examples" />
+    <meta name="twitter:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta name="twitter:creator" content="@NicolasZu" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Seeded noise Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet" />
+    <meta property="og:description" content="Use a seeded generator for worlds that should rebuild from a small seed. Smooth noise gives nearby coordinates related values, while independent random samples create abrupt changes." />
+    <link rel="canonical" href="https://gamedev-cheatsheet.com/concepts/seeded-noise/" />
+    <meta property="og:url" content="https://gamedev-cheatsheet.com/concepts/seeded-noise/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#07070b" />
+    <script type="module" crossorigin src="/assets/main-BnLIw7Rw.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="/assets/main-D-IG9H1k.css">
+  <link rel="preload" href="/assets/geist-latin-wght-normal-Dm3htQBi.woff2" as="font" type="font/woff2" crossorigin /><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Seeded noise in game development","description":"Seeded noise builds a world from a seeded random number generator, so the same seed always rebuilds the same world and a save only needs to store that one number. The top strip picks each of its 64 column heights with Math.random, so it is jagged and different on every regenerate. The bottom strip sums 4 octaves of value noise from a seeded generator, so its hills are smooth, the same seed redraws them exactly over the dashed outline, and a new seed gives new hills.","url":"https://gamedev-cheatsheet.com/concepts/seeded-noise/","image":"https://gamedev-cheatsheet.com/og.jpg","author":{"@type":"Person","name":"Nicolas Zullo","url":"https://gamedev-cheatsheet.com/about/"},"mainEntityOfPage":"https://gamedev-cheatsheet.com/concepts/seeded-noise/"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Game Dev Cheat Sheet","item":"https://gamedev-cheatsheet.com/"},{"@type":"ListItem","position":2,"name":"Seeded noise","item":"https://gamedev-cheatsheet.com/concepts/seeded-noise/"}]}]}</script></head>
+  <body>
+    <header class="bar">
+      <div class="bar__inner">
+        <a class="logo" href="/">
+          <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          Game dev cheat sheet
+        </a>
+        <nav class="bar__nav" id="nav" aria-label="Chapters"><a data-category="3d" href="/#chapter-3d">3D &amp; rendering</a><a data-category="feel" href="/#chapter-feel">Game feel</a><a data-category="systems" href="/#chapter-systems">Systems</a><a data-category="perf" href="/#chapter-perf">Performance</a></nav>
+        <a class="bar__link" href="/#newsletter">Get updates ↗</a>
+      </div>
+    </header>
+
+    <main class="concept-page"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Cheat sheet</a><span>›</span><a href="/#chapter-systems">Systems</a><span>›</span><span>Seeded noise</span></nav><header class="concept-heading"><p class="hero__kicker">Systems</p><h1>Seeded noise in game development</h1><p>same seed, same world</p></header><div class="concept-layout"><div><article class="card card--detail" id="seeded-noise" data-slug="seeded-noise" data-module="seeded-noise.ts" data-category="systems"><div class="card__stage"><canvas role="img" aria-label="Seeded noise: same seed, same world"></canvas><span class="demo-caption">Interactive example · scroll or point here to play</span></div><div class="card__body"><span class="card__num">27</span><p class="card__tagline">same seed, same world</p><p class="card__text">Seeded noise builds a world from a seeded random number generator, so the same seed always rebuilds the same world and a save only needs to store that one number. The top strip picks each of its 64 column heights with Math.random, so it is jagged and different on every regenerate. The bottom strip sums 4 octaves of value noise from a seeded generator, so its hills are smooth, the same seed redraws them exactly over the dashed outline, and a new seed gives new hills.</p><div class="prompt"><div class="prompt__head"><span class="prompt__label">prompt bit</span><button type="button" class="prompt__copy" aria-label="Copy Seeded noise prompt">Copy</button></div><code class="prompt__code">Generate the world from a seeded PRNG such as mulberry32 feeding 2D Perlin or simplex noise with 3 to 5 octaves, each at double the frequency and half the amplitude of the one before, store the seed in the save file, and never call Math.random in world generation.</code></div></div></article></div><div class="concept-guide"><section><h2>When to use it</h2><p>Use a seeded generator for worlds that should rebuild from a small seed. Smooth noise gives nearby coordinates related values, while independent random samples create abrupt changes.</p></section><section><h2>Implementation example</h2><p class="example-note">Engine-neutral pseudocode. Adapt the functions and coordinate conventions to your engine.</p><pre><code>height = 0
+frequency = baseFrequency
+amplitude = 1
+for octave in range(4):
+  height += noise(seed, x * frequency) * amplitude
+  frequency *= 2
+  amplitude *= 0.5</code></pre></section><section><h2>Common mistakes</h2><p>Keep the algorithm and sampling order stable across saves. A shared sequential random stream can shift the whole world when one extra random call is inserted; coordinate-based sampling avoids that dependency.</p></section></div></div><section class="related"><h2>Related concepts</h2><div><a href="/concepts/chunk-streaming/"><strong>Chunk streaming</strong><span>load only what is near the player</span></a><a href="/concepts/screen-shake/"><strong>Screen shake</strong><span>one trauma value drives the shake</span></a><a href="/concepts/particle-system/"><strong>Particle system</strong><span>one emitter, many short lives</span></a></div></section><p class="byline">Maintained by <a href="/about/">Nicolas Zullo</a> · <a href="https://x.com/NicolasZu" data-track="follow_x" target="_blank" rel="noopener noreferrer">Follow on X ↗</a></p></main>
+
+    <footer class="site-footer"><div><strong>Keep learning with Nicolas</strong><p>New concepts, visual explanations, and game development notes.</p><a class="follow-link" data-track="follow_x" href="https://x.com/NicolasZu" target="_blank" rel="noopener noreferrer">Follow @NicolasZu on X ↗</a></div><nav aria-label="Site information"><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/#newsletter">Email updates</a><a href="/#top">Back to top ↑</a></nav></footer>
+  </body>
+</html>

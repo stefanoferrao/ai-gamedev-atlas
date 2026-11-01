@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acceleration and friction Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet</title>
+    <meta name="description" content="Use acceleration to make movement build speed and deceleration to control how quickly the player stops. Different ground, air, and reversal rates can create distinct movement feel." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+
+    <meta name="google-site-verification" content="ywt33Tr3Vdd1dW8deBktVeFzcmp7OYgQj49ARpMsWlY" />
+    <meta property="og:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta property="og:image:alt" content="Game development concepts with interactive visual examples" />
+    <meta name="twitter:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta name="twitter:creator" content="@NicolasZu" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Acceleration and friction Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet" />
+    <meta property="og:description" content="Use acceleration to make movement build speed and deceleration to control how quickly the player stops. Different ground, air, and reversal rates can create distinct movement feel." />
+    <link rel="canonical" href="https://gamedev-cheatsheet.com/concepts/acceleration-and-friction/" />
+    <meta property="og:url" content="https://gamedev-cheatsheet.com/concepts/acceleration-and-friction/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#07070b" />
+    <script type="module" crossorigin src="/assets/main-BnLIw7Rw.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="/assets/main-D-IG9H1k.css">
+  <link rel="preload" href="/assets/geist-latin-wght-normal-Dm3htQBi.woff2" as="font" type="font/woff2" crossorigin /><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Acceleration and friction in game development","description":"Acceleration and friction move the velocity toward the input speed by a set amount per second, instead of setting it in one frame. The bottom character reaches full speed in 0.2 s, stops 0.1 s after release, and brakes twice as hard when the input flips direction. The top character copies the input directly, so its speed trace is a square wave and it starts, stops and turns around in a single frame.","url":"https://gamedev-cheatsheet.com/concepts/acceleration-and-friction/","image":"https://gamedev-cheatsheet.com/og.jpg","author":{"@type":"Person","name":"Nicolas Zullo","url":"https://gamedev-cheatsheet.com/about/"},"mainEntityOfPage":"https://gamedev-cheatsheet.com/concepts/acceleration-and-friction/"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Game Dev Cheat Sheet","item":"https://gamedev-cheatsheet.com/"},{"@type":"ListItem","position":2,"name":"Acceleration and friction","item":"https://gamedev-cheatsheet.com/concepts/acceleration-and-friction/"}]}]}</script></head>
+  <body>
+    <header class="bar">
+      <div class="bar__inner">
+        <a class="logo" href="/">
+          <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          Game dev cheat sheet
+        </a>
+        <nav class="bar__nav" id="nav" aria-label="Chapters"><a data-category="3d" href="/#chapter-3d">3D &amp; rendering</a><a data-category="feel" href="/#chapter-feel">Game feel</a><a data-category="systems" href="/#chapter-systems">Systems</a><a data-category="perf" href="/#chapter-perf">Performance</a></nav>
+        <a class="bar__link" href="/#newsletter">Get updates ↗</a>
+      </div>
+    </header>
+
+    <main class="concept-page"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Cheat sheet</a><span>›</span><a href="/#chapter-feel">Game feel</a><span>›</span><span>Acceleration and friction</span></nav><header class="concept-heading"><p class="hero__kicker">Game feel</p><h1>Acceleration and friction in game development</h1><p>speed builds up and bleeds off</p></header><div class="concept-layout"><div><article class="card card--detail" id="acceleration-and-friction" data-slug="acceleration-and-friction" data-module="acceleration.ts" data-category="feel"><div class="card__stage"><canvas role="img" aria-label="Acceleration and friction: speed builds up and bleeds off"></canvas><span class="demo-caption">Interactive example · scroll or point here to play</span></div><div class="card__body"><span class="card__num">16</span><p class="card__tagline">speed builds up and bleeds off</p><p class="card__text">Acceleration and friction move the velocity toward the input speed by a set amount per second, instead of setting it in one frame. The bottom character reaches full speed in 0.2 s, stops 0.1 s after release, and brakes twice as hard when the input flips direction. The top character copies the input directly, so its speed trace is a square wave and it starts, stops and turns around in a single frame.</p><div class="prompt"><div class="prompt__head"><span class="prompt__label">prompt bit</span><button type="button" class="prompt__copy" aria-label="Copy Acceleration and friction prompt">Copy</button></div><code class="prompt__code">Give horizontal movement acceleration and friction: each frame move the velocity toward input times max speed with an acceleration that reaches max speed in 0.1 to 0.2 s, decelerate to a stop in about 0.1 s when no direction is held, use twice that deceleration when the input points against the current velocity, and halve both rates while airborne.</code></div></div></article></div><div class="concept-guide"><section><h2>When to use it</h2><p>Use acceleration to make movement build speed and deceleration to control how quickly the player stops. Different ground, air, and reversal rates can create distinct movement feel.</p></section><section><h2>Implementation example</h2><p class="example-note">Engine-neutral pseudocode. Adapt the functions and coordinate conventions to your engine.</p><pre><code>target = inputAxis * maxSpeed
+rate = acceleration if inputAxis != 0 else deceleration
+if target * velocity.x &lt; 0: rate = reversalRate
+velocity.x = moveTowards(velocity.x, target, rate * dt)</code></pre></section><section><h2>Common mistakes</h2><p>A controller’s deceleration setting is not necessarily physical friction. Use consistent units and test reversals, airborne steering, and slopes at several frame rates.</p></section></div></div><section class="related"><h2>Related concepts</h2><div><a href="/concepts/delta-time/"><strong>Delta time</strong><span>move per second, not per frame</span></a><a href="/concepts/coyote-time/"><strong>Coyote time</strong><span>a late jump that still counts</span></a><a href="/concepts/steering-behaviors/"><strong>Steering behaviors</strong><span>nudge velocity toward a goal</span></a></div></section><p class="byline">Maintained by <a href="/about/">Nicolas Zullo</a> · <a href="https://x.com/NicolasZu" data-track="follow_x" target="_blank" rel="noopener noreferrer">Follow on X ↗</a></p></main>
+
+    <footer class="site-footer"><div><strong>Keep learning with Nicolas</strong><p>New concepts, visual explanations, and game development notes.</p><a class="follow-link" data-track="follow_x" href="https://x.com/NicolasZu" target="_blank" rel="noopener noreferrer">Follow @NicolasZu on X ↗</a></div><nav aria-label="Site information"><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/#newsletter">Email updates</a><a href="/#top">Back to top ↑</a></nav></footer>
+  </body>
+</html>

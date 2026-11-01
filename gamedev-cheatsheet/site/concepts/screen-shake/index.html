@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Screen shake Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet</title>
+    <meta name="description" content="Use short, decaying shake to communicate impact. Keep it on a visual camera offset so shake does not change gameplay aiming, collision tests, or the camera’s persistent follow position." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+
+    <meta name="google-site-verification" content="ywt33Tr3Vdd1dW8deBktVeFzcmp7OYgQj49ARpMsWlY" />
+    <meta property="og:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta property="og:image:alt" content="Game development concepts with interactive visual examples" />
+    <meta name="twitter:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta name="twitter:creator" content="@NicolasZu" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Screen shake Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet" />
+    <meta property="og:description" content="Use short, decaying shake to communicate impact. Keep it on a visual camera offset so shake does not change gameplay aiming, collision tests, or the camera’s persistent follow position." />
+    <link rel="canonical" href="https://gamedev-cheatsheet.com/concepts/screen-shake/" />
+    <meta property="og:url" content="https://gamedev-cheatsheet.com/concepts/screen-shake/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#07070b" />
+    <script type="module" crossorigin src="/assets/main-BnLIw7Rw.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="/assets/main-D-IG9H1k.css">
+  <link rel="preload" href="/assets/geist-latin-wght-normal-Dm3htQBi.woff2" as="font" type="font/woff2" crossorigin /><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Screen shake in game development","description":"Screen shake moves the camera after a hit, driven by a trauma value from 0 to 1 that each hit raises and that falls back to 0 over about a second. The right view shakes by trauma squared times smooth noise, so the two light hits move a few pixels and the heavy hit moves far. The left view uses raw trauma and a new random offset every frame, so every hit jitters.","url":"https://gamedev-cheatsheet.com/concepts/screen-shake/","image":"https://gamedev-cheatsheet.com/og.jpg","author":{"@type":"Person","name":"Nicolas Zullo","url":"https://gamedev-cheatsheet.com/about/"},"mainEntityOfPage":"https://gamedev-cheatsheet.com/concepts/screen-shake/"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Game Dev Cheat Sheet","item":"https://gamedev-cheatsheet.com/"},{"@type":"ListItem","position":2,"name":"Screen shake","item":"https://gamedev-cheatsheet.com/concepts/screen-shake/"}]}]}</script></head>
+  <body>
+    <header class="bar">
+      <div class="bar__inner">
+        <a class="logo" href="/">
+          <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          Game dev cheat sheet
+        </a>
+        <nav class="bar__nav" id="nav" aria-label="Chapters"><a data-category="3d" href="/#chapter-3d">3D &amp; rendering</a><a data-category="feel" href="/#chapter-feel">Game feel</a><a data-category="systems" href="/#chapter-systems">Systems</a><a data-category="perf" href="/#chapter-perf">Performance</a></nav>
+        <a class="bar__link" href="/#newsletter">Get updates ↗</a>
+      </div>
+    </header>
+
+    <main class="concept-page"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Cheat sheet</a><span>›</span><a href="/#chapter-feel">Game feel</a><span>›</span><span>Screen shake</span></nav><header class="concept-heading"><p class="hero__kicker">Game feel</p><h1>Screen shake in game development</h1><p>one trauma value drives the shake</p></header><div class="concept-layout"><div><article class="card card--detail" id="screen-shake" data-slug="screen-shake" data-module="screen-shake.ts" data-category="feel"><div class="card__stage"><canvas role="img" aria-label="Screen shake: one trauma value drives the shake"></canvas><span class="demo-caption">Interactive example · scroll or point here to play</span></div><div class="card__body"><span class="card__num">12</span><p class="card__tagline">one trauma value drives the shake</p><p class="card__text">Screen shake moves the camera after a hit, driven by a trauma value from 0 to 1 that each hit raises and that falls back to 0 over about a second. The right view shakes by trauma squared times smooth noise, so the two light hits move a few pixels and the heavy hit moves far. The left view uses raw trauma and a new random offset every frame, so every hit jitters.</p><div class="prompt"><div class="prompt__head"><span class="prompt__label">prompt bit</span><button type="button" class="prompt__copy" aria-label="Copy Screen shake prompt">Copy</button></div><code class="prompt__code">Drive screen shake from a trauma value between 0 and 1: each hit adds 0.3 to 0.6, trauma decays by about 1 per second, and each frame the camera x, y and roll offsets equal a max offset times trauma squared times smooth Perlin noise, not fresh random numbers.</code></div></div></article></div><div class="concept-guide"><section><h2>When to use it</h2><p>Use short, decaying shake to communicate impact. Keep it on a visual camera offset so shake does not change gameplay aiming, collision tests, or the camera’s persistent follow position.</p></section><section><h2>Implementation example</h2><p class="example-note">Engine-neutral pseudocode. Adapt the functions and coordinate conventions to your engine.</p><pre><code>trauma = clamp(trauma + impact, 0, 1)
+trauma = max(0, trauma - decay * dt)
+amplitude = trauma * trauma
+cameraOffset.x = noise(time * frequency) * maxOffset * amplitude</code></pre></section><section><h2>Common mistakes</h2><p>Do not accumulate random offsets into the base camera position. Apply shake relative to a stable pose, and provide a reduced-motion or shake-strength setting.</p></section></div></div><section class="related"><h2>Related concepts</h2><div><a href="/concepts/hit-stop/"><strong>Hit stop</strong><span>freeze both fighters on impact</span></a><a href="/concepts/camera-deadzone/"><strong>Camera deadzone</strong><span>let the player move first</span></a><a href="/concepts/seeded-noise/"><strong>Seeded noise</strong><span>same seed, same world</span></a></div></section><p class="byline">Maintained by <a href="/about/">Nicolas Zullo</a> · <a href="https://x.com/NicolasZu" data-track="follow_x" target="_blank" rel="noopener noreferrer">Follow on X ↗</a></p></main>
+
+    <footer class="site-footer"><div><strong>Keep learning with Nicolas</strong><p>New concepts, visual explanations, and game development notes.</p><a class="follow-link" data-track="follow_x" href="https://x.com/NicolasZu" target="_blank" rel="noopener noreferrer">Follow @NicolasZu on X ↗</a></div><nav aria-label="Site information"><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/#newsletter">Email updates</a><a href="/#top">Back to top ↑</a></nav></footer>
+  </body>
+</html>

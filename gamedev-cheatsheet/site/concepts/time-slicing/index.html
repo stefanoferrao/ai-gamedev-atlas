@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Time slicing Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet</title>
+    <meta name="description" content="Use time slicing for decisions that do not need to run every frame, such as distant AI planning. Keep immediate reactions and movement on the cadence their gameplay requires." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+
+    <meta name="google-site-verification" content="ywt33Tr3Vdd1dW8deBktVeFzcmp7OYgQj49ARpMsWlY" />
+    <meta property="og:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta property="og:image:alt" content="Game development concepts with interactive visual examples" />
+    <meta name="twitter:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta name="twitter:creator" content="@NicolasZu" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Time slicing Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet" />
+    <meta property="og:description" content="Use time slicing for decisions that do not need to run every frame, such as distant AI planning. Keep immediate reactions and movement on the cadence their gameplay requires." />
+    <link rel="canonical" href="https://gamedev-cheatsheet.com/concepts/time-slicing/" />
+    <meta property="og:url" content="https://gamedev-cheatsheet.com/concepts/time-slicing/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#07070b" />
+    <script type="module" crossorigin src="/assets/main-BnLIw7Rw.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="/assets/main-D-IG9H1k.css">
+  <link rel="preload" href="/assets/geist-latin-wght-normal-Dm3htQBi.woff2" as="font" type="font/woff2" crossorigin /><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Time slicing in game development","description":"Time slicing spreads expensive work over several frames instead of running all of it every frame. Here 192 agents are split into 8 buckets, and each frame only one bucket, the lit cell under the cost bar, picks a new target, while all of them keep moving every frame. At 60 fps each agent now re-decides 7.5 times a second instead of 60, and the frame drops back under the 16.67 ms budget.","url":"https://gamedev-cheatsheet.com/concepts/time-slicing/","image":"https://gamedev-cheatsheet.com/og.jpg","author":{"@type":"Person","name":"Nicolas Zullo","url":"https://gamedev-cheatsheet.com/about/"},"mainEntityOfPage":"https://gamedev-cheatsheet.com/concepts/time-slicing/"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Game Dev Cheat Sheet","item":"https://gamedev-cheatsheet.com/"},{"@type":"ListItem","position":2,"name":"Time slicing","item":"https://gamedev-cheatsheet.com/concepts/time-slicing/"}]}]}</script></head>
+  <body>
+    <header class="bar">
+      <div class="bar__inner">
+        <a class="logo" href="/">
+          <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          Game dev cheat sheet
+        </a>
+        <nav class="bar__nav" id="nav" aria-label="Chapters"><a data-category="3d" href="/#chapter-3d">3D &amp; rendering</a><a data-category="feel" href="/#chapter-feel">Game feel</a><a data-category="systems" href="/#chapter-systems">Systems</a><a data-category="perf" href="/#chapter-perf">Performance</a></nav>
+        <a class="bar__link" href="/#newsletter">Get updates ↗</a>
+      </div>
+    </header>
+
+    <main class="concept-page"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Cheat sheet</a><span>›</span><a href="/#chapter-perf">Performance</a><span>›</span><span>Time slicing</span></nav><header class="concept-heading"><p class="hero__kicker">Performance</p><h1>Time slicing in game development</h1><p>spread the work across frames</p></header><div class="concept-layout"><div><article class="card card--detail" id="time-slicing" data-slug="time-slicing" data-module="time-slicing.ts" data-category="perf"><div class="card__stage"><canvas role="img" aria-label="Time slicing: spread the work across frames"></canvas><span class="demo-caption">Interactive example · scroll or point here to play</span></div><div class="card__body"><span class="card__num">32</span><p class="card__tagline">spread the work across frames</p><p class="card__text">Time slicing spreads expensive work over several frames instead of running all of it every frame. Here 192 agents are split into 8 buckets, and each frame only one bucket, the lit cell under the cost bar, picks a new target, while all of them keep moving every frame. At 60 fps each agent now re-decides 7.5 times a second instead of 60, and the frame drops back under the 16.67 ms budget.</p><div class="prompt"><div class="prompt__head"><span class="prompt__label">prompt bit</span><button type="button" class="prompt__copy" aria-label="Copy Time slicing prompt">Copy</button></div><code class="prompt__code">Time-slice expensive AI updates by splitting agents into 4 to 8 buckets by index and running decisions like pathfinding or target selection for one bucket per frame, while movement and animation still update every frame.</code></div></div></article></div><div class="concept-guide"><section><h2>When to use it</h2><p>Use time slicing for decisions that do not need to run every frame, such as distant AI planning. Keep immediate reactions and movement on the cadence their gameplay requires.</p></section><section><h2>Implementation example</h2><p class="example-note">Engine-neutral pseudocode. Adapt the functions and coordinate conventions to your engine.</p><pre><code>bucket = frameIndex % bucketCount
+for agent in agents:
+  if agent.id % bucketCount == bucket:
+    agent.chooseTarget()
+  agent.move(dt)</code></pre></section><section><h2>Common mistakes</h2><p>Measure how much response delay the schedule adds. Give urgent tasks a separate budget, and avoid concentrating all expensive agents in the same bucket.</p></section></div></div><section class="related"><h2>Related concepts</h2><div><a href="/concepts/frame-budget/"><strong>Frame budget</strong><span>16.67 ms, and where it goes</span></a><a href="/concepts/pathfinding/"><strong>A* pathfinding</strong><span>search that aims at the goal</span></a><a href="/concepts/steering-behaviors/"><strong>Steering behaviors</strong><span>nudge velocity toward a goal</span></a></div></section><p class="byline">Maintained by <a href="/about/">Nicolas Zullo</a> · <a href="https://x.com/NicolasZu" data-track="follow_x" target="_blank" rel="noopener noreferrer">Follow on X ↗</a></p></main>
+
+    <footer class="site-footer"><div><strong>Keep learning with Nicolas</strong><p>New concepts, visual explanations, and game development notes.</p><a class="follow-link" data-track="follow_x" href="https://x.com/NicolasZu" target="_blank" rel="noopener noreferrer">Follow @NicolasZu on X ↗</a></div><nav aria-label="Site information"><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/#newsletter">Email updates</a><a href="/#top">Back to top ↑</a></nav></footer>
+  </body>
+</html>

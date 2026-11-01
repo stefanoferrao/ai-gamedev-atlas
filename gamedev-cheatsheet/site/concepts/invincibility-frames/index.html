@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invincibility frames Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet</title>
+    <meta name="description" content="Use a damage cooldown after a hit or during selected dodge frames. The visual feedback should communicate protection, while the damage system enforces it independently of sprite visibility." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+
+    <meta name="google-site-verification" content="ywt33Tr3Vdd1dW8deBktVeFzcmp7OYgQj49ARpMsWlY" />
+    <meta property="og:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta property="og:image:alt" content="Game development concepts with interactive visual examples" />
+    <meta name="twitter:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta name="twitter:creator" content="@NicolasZu" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Invincibility frames Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet" />
+    <meta property="og:description" content="Use a damage cooldown after a hit or during selected dodge frames. The visual feedback should communicate protection, while the damage system enforces it independently of sprite visibility." />
+    <link rel="canonical" href="https://gamedev-cheatsheet.com/concepts/invincibility-frames/" />
+    <meta property="og:url" content="https://gamedev-cheatsheet.com/concepts/invincibility-frames/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#07070b" />
+    <script type="module" crossorigin src="/assets/main-BnLIw7Rw.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="/assets/main-D-IG9H1k.css">
+  <link rel="preload" href="/assets/geist-latin-wght-normal-Dm3htQBi.woff2" as="font" type="font/woff2" crossorigin /><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Invincibility frames in game development","description":"Invincibility frames, or i-frames, are a window of 0.5 to 1 s after a hit during which the character ignores further damage. Without them, a bolt that overlaps the character for 9 frames deals damage on all 9, and three bolts empty the top health bar. The bottom character takes one hit, gets knocked back, and blinks for 1 s while the next bolt passes through without dealing damage.","url":"https://gamedev-cheatsheet.com/concepts/invincibility-frames/","image":"https://gamedev-cheatsheet.com/og.jpg","author":{"@type":"Person","name":"Nicolas Zullo","url":"https://gamedev-cheatsheet.com/about/"},"mainEntityOfPage":"https://gamedev-cheatsheet.com/concepts/invincibility-frames/"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Game Dev Cheat Sheet","item":"https://gamedev-cheatsheet.com/"},{"@type":"ListItem","position":2,"name":"Invincibility frames","item":"https://gamedev-cheatsheet.com/concepts/invincibility-frames/"}]}]}</script></head>
+  <body>
+    <header class="bar">
+      <div class="bar__inner">
+        <a class="logo" href="/">
+          <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          Game dev cheat sheet
+        </a>
+        <nav class="bar__nav" id="nav" aria-label="Chapters"><a data-category="3d" href="/#chapter-3d">3D &amp; rendering</a><a data-category="feel" href="/#chapter-feel">Game feel</a><a data-category="systems" href="/#chapter-systems">Systems</a><a data-category="perf" href="/#chapter-perf">Performance</a></nav>
+        <a class="bar__link" href="/#newsletter">Get updates ↗</a>
+      </div>
+    </header>
+
+    <main class="concept-page"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Cheat sheet</a><span>›</span><a href="/#chapter-feel">Game feel</a><span>›</span><span>Invincibility frames</span></nav><header class="concept-heading"><p class="hero__kicker">Game feel</p><h1>Invincibility frames in game development</h1><p>brief safety after each hit</p></header><div class="concept-layout"><div><article class="card card--detail" id="invincibility-frames" data-slug="invincibility-frames" data-module="i-frames.ts" data-category="feel"><div class="card__stage"><canvas role="img" aria-label="Invincibility frames: brief safety after each hit"></canvas><span class="demo-caption">Interactive example · scroll or point here to play</span></div><div class="card__body"><span class="card__num">18</span><p class="card__tagline">brief safety after each hit</p><p class="card__text">Invincibility frames, or i-frames, are a window of 0.5 to 1 s after a hit during which the character ignores further damage. Without them, a bolt that overlaps the character for 9 frames deals damage on all 9, and three bolts empty the top health bar. The bottom character takes one hit, gets knocked back, and blinks for 1 s while the next bolt passes through without dealing damage.</p><div class="prompt"><div class="prompt__head"><span class="prompt__label">prompt bit</span><button type="button" class="prompt__copy" aria-label="Copy Invincibility frames prompt">Copy</button></div><code class="prompt__code">Add invincibility frames: after the player takes damage, ignore all further damage for 0.5 to 1 s, blink the sprite on and off at about 10 Hz during that window, and apply a knockback impulse that pushes the player away from the damage source.</code></div></div></article></div><div class="concept-guide"><section><h2>When to use it</h2><p>Use a damage cooldown after a hit or during selected dodge frames. The visual feedback should communicate protection, while the damage system enforces it independently of sprite visibility.</p></section><section><h2>Implementation example</h2><p class="example-note">Engine-neutral pseudocode. Adapt the functions and coordinate conventions to your engine.</p><pre><code>if incomingHit and invulnerability &lt;= 0:
+  health -= damage
+  invulnerability = 0.75
+invulnerability = max(0, invulnerability - dt)
+visual.visible = invulnerability &lt;= 0 or blinkPhase(time)</code></pre></section><section><h2>Common mistakes</h2><p>Blinking alone does not prevent damage. Decide which damage types ignore invulnerability, and distinguish a per-target cooldown from preventing repeated hits by a single attack.</p></section></div></div><section class="related"><h2>Related concepts</h2><div><a href="/concepts/hitbox-hurtbox/"><strong>Hitbox and hurtbox</strong><span>what hits, what gets hit</span></a><a href="/concepts/hit-stop/"><strong>Hit stop</strong><span>freeze both fighters on impact</span></a><a href="/concepts/state-machine/"><strong>Finite state machine</strong><span>one state at a time</span></a></div></section><p class="byline">Maintained by <a href="/about/">Nicolas Zullo</a> · <a href="https://x.com/NicolasZu" data-track="follow_x" target="_blank" rel="noopener noreferrer">Follow on X ↗</a></p></main>
+
+    <footer class="site-footer"><div><strong>Keep learning with Nicolas</strong><p>New concepts, visual explanations, and game development notes.</p><a class="follow-link" data-track="follow_x" href="https://x.com/NicolasZu" target="_blank" rel="noopener noreferrer">Follow @NicolasZu on X ↗</a></div><nav aria-label="Site information"><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/#newsletter">Email updates</a><a href="/#top">Back to top ↑</a></nav></footer>
+  </body>
+</html>

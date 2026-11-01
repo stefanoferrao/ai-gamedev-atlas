@@ -6,6 +6,8 @@ Atlas visual de referências para criar jogos **2D com IA**: ferramentas, pacote
 
 ## Sumário
 
+- [Estrutura](#estrutura)
+- [Como usar](#como-usar)
 - [Ferramentas e assets](#ferramentas-e-assets)
   - [pixelfx — 244 efeitos de pixel art em código](#pixelfx)
   - [SpriteFusion Sprite Normals — normal maps para sprites](#spritefusion-sprite-normals)
@@ -16,65 +18,106 @@ Atlas visual de referências para criar jogos **2D com IA**: ferramentas, pacote
 
 ---
 
+## Estrutura
+
+Tudo fica dentro deste repositório: código, assets e demos. Não depende dos repositórios de origem nem do site.
+
+```
+ai-gamedev-atlas/
+├── repos/                         # código/conteúdo completo de cada repo (vendorizado)
+│   ├── pixelfx/                   #   efeitos JS + skill do Claude Code (skills/pixelfx)
+│   ├── spritefusion-sprite-normals/  # CLI Rust de normal maps
+│   ├── pixel-planets-godot4/      #   projeto Godot 4 com shaders de planetas
+│   └── PixelSRPG-Forge/           #   assets pixel art, zips já extraídos
+├── gamedev-cheatsheet/
+│   ├── README.md                  # índice dos 34 conceitos
+│   ├── <conceito>.md              # texto, prompt bit, pseudocódigo, erros comuns
+│   ├── media/                     # GIF + PNG de cada demo
+│   └── site/                      # espelho offline do site (demos interativas)
+├── previews/                      # imagens deste README + SOURCES.md
+├── scripts/
+│   ├── serve.sh                   # sobe cheatsheet ou galeria pixelfx localmente
+│   ├── update-vendor.sh           # atualiza repos/ a partir do upstream
+│   └── unzip_safe.py
+├── VENDORED.md                    # origem, commit e licença de cada cópia
+└── CHANGELOG.md                   # notas de atualização (releases)
+```
+
+## Como usar
+
+| Quero... | Faça |
+|---|---|
+| Colar um conceito no prompt da IA | Abra `gamedev-cheatsheet/<conceito>.md` e copie o bloco **Prompt bit** |
+| Ver as demos interativas offline | `scripts/serve.sh cheatsheet` e abra <http://127.0.0.1:8765> |
+| Ver/editar os efeitos do pixelfx | `scripts/serve.sh pixelfx` (Node 18+) |
+| Instalar a skill pixelfx no Claude Code | `cp -r repos/pixelfx/skills/pixelfx ~/.claude/skills/` |
+| Usar os efeitos num jogo web | copie `repos/pixelfx/src/core` e os efeitos de `repos/pixelfx/src/fx` |
+| Gerar normal map de um sprite | `cd repos/spritefusion-sprite-normals && cargo install --path . --locked` (ver README do repo) |
+| Usar planetas no Godot 4 | abra `repos/pixel-planets-godot4/project.godot` no Godot 4 |
+| Usar assets de SRPG | arraste as pastas de `repos/PixelSRPG-Forge/` para o projeto (Godot, Unity, SRPG Studio) |
+| Atualizar tudo do upstream | `scripts/update-vendor.sh` (ou `scripts/update-vendor.sh pixelfx`) e revise o `git diff` |
+
+---
+
 ## Ferramentas e assets
 
 ### pixelfx
 
-**[patch-gg/pixelfx](https://github.com/patch-gg/pixelfx)** · JavaScript · MIT
+📁 **Local: [`repos/pixelfx/`](repos/pixelfx/)** · origem [patch-gg/pixelfx](https://github.com/patch-gg/pixelfx) · JavaScript · MIT
 
 244 efeitos de pixel art, cada um um pequeno trecho de código, e uma skill do Claude Code para criar os seus. Bom ponto de partida para VFX procedural (fogo, água, portais, magia) sem spritesheet.
 
-![pixelfx montage](assets/pixelfx/montage.gif)
+![pixelfx montage](repos/pixelfx/docs/readme/montage.gif)
 
 | Campfire | Waterfall | Plasma ball |
 |:---:|:---:|:---:|
-| ![](assets/pixelfx/fx-campfire.gif) | ![](assets/pixelfx/fx-waterfall.gif) | ![](assets/pixelfx/fx-plasma-ball.gif) |
+| ![](previews/pixelfx/fx-campfire.gif) | ![](previews/pixelfx/fx-waterfall.gif) | ![](previews/pixelfx/fx-plasma-ball.gif) |
 | **Portal** | **Black hole** | **Tornado** |
-| ![](assets/pixelfx/fx-portal.gif) | ![](assets/pixelfx/fx-black-hole.gif) | ![](assets/pixelfx/fx-tornado.gif) |
+| ![](previews/pixelfx/fx-portal.gif) | ![](previews/pixelfx/fx-black-hole.gif) | ![](previews/pixelfx/fx-tornado.gif) |
 
 Animações de combate (knight vs. dummy):
 
-![pixelfx acts](assets/pixelfx/acts.gif)
+![pixelfx acts](repos/pixelfx/docs/readme/acts.gif)
 
 ### SpriteFusion Sprite Normals
 
-**[Hugo-Dz/spritefusion-sprite-normals](https://github.com/Hugo-Dz/spritefusion-sprite-normals)** · Rust · MIT
+📁 **Local: [`repos/spritefusion-sprite-normals/`](repos/spritefusion-sprite-normals/)** · origem [Hugo-Dz/spritefusion-sprite-normals](https://github.com/Hugo-Dz/spritefusion-sprite-normals) · Rust · MIT
 
 Gera normal maps a partir de qualquer sprite ou spritesheet animado. Com o normal map, a engine ilumina pixel art 2D com luzes dinâmicas (ver [Normals](gamedev-cheatsheet/normals.md)).
 
-![SpriteFusion: normal map à esquerda, sprite iluminado à direita](assets/spritefusion-sprite-normals/hero.webp)
+![SpriteFusion: normal map à esquerda, sprite iluminado à direita](repos/spritefusion-sprite-normals/static/hero.webp)
 
 ### Pixel Planets (Godot 4)
 
-**[jacob-winkler/pixel-planets-godot4](https://github.com/jacob-winkler/pixel-planets-godot4)** · GDScript · MIT (branch `migrate-to-godot-4`)
+📁 **Local: [`repos/pixel-planets-godot4/`](repos/pixel-planets-godot4/)** · origem [jacob-winkler/pixel-planets-godot4](https://github.com/jacob-winkler/pixel-planets-godot4) · GDScript · MIT (branch `migrate-to-godot-4`)
 
 Port para Godot 4 do [Pixel Planet Generator](https://deep-fold.itch.io/pixel-planet-generator) de Deep-Fold ([código original](https://github.com/Deep-Fold/PixelPlanets)). Planetas, luas, gigantes gasosos, anéis e estrelas em pixel art, todos via shaders com seed, cores e resolução configuráveis.
 
 | Terran (wet) | Ocean islands | Ice world |
 |:---:|:---:|:---:|
-| ![](assets/pixel-planets-godot4/itch-cover_terran-wet.png) | ![](assets/pixel-planets-godot4/itch-shot1_ocean-islands.png) | ![](assets/pixel-planets-godot4/itch-shot2_ice-world.png) |
+| ![](previews/pixel-planets-godot4/itch-cover_terran-wet.png) | ![](previews/pixel-planets-godot4/itch-shot1_ocean-islands.png) | ![](previews/pixel-planets-godot4/itch-shot2_ice-world.png) |
 | **Ringed gas giant** | **Lava / dry** | **Terran** |
-| ![](assets/pixel-planets-godot4/itch-shot3_ringed-gas-giant.png) | ![](assets/pixel-planets-godot4/itch-shot4_lava-dry.png) | ![](assets/pixel-planets-godot4/itch-shot5_terran.png) |
+| ![](previews/pixel-planets-godot4/itch-shot3_ringed-gas-giant.png) | ![](previews/pixel-planets-godot4/itch-shot4_lava-dry.png) | ![](previews/pixel-planets-godot4/itch-shot5_terran.png) |
 
 Gerador em ação (port Unity [hmcGit/UniPixelPlanet](https://github.com/hmcGit/UniPixelPlanet), mesmos shaders):
 
-![Pixel planet generator demo](assets/pixel-planets-godot4/unipixelplanet-port_generator-demo.gif)
+![Pixel planet generator demo](previews/pixel-planets-godot4/unipixelplanet-port_generator-demo.gif)
 
 ### PixelSRPG-Forge
 
-**[Huu-Yuu/PixelSRPG-Forge](https://github.com/Huu-Yuu/PixelSRPG-Forge)** · MIT (declarada pelo repo)
+📁 **Local: [`repos/PixelSRPG-Forge/`](repos/PixelSRPG-Forge/)** · origem [Huu-Yuu/PixelSRPG-Forge](https://github.com/Huu-Yuu/PixelSRPG-Forge) · MIT (declarada pelo repo)
 
 Coleção de assets pixel art para SRPG: personagens, construções, terreno, interiores, UI, ícones, efeitos e sons. Compatível com SRPG Studio, Godot e Unity.
 
-![PixelSRPG-Forge contact sheet](assets/PixelSRPG-Forge/contact-sheet.png)
+![PixelSRPG-Forge contact sheet](previews/PixelSRPG-Forge/contact-sheet.png)
 
 | Clean City | FarmLife | Pixel Dungeon |
 |:---:|:---:|:---:|
-| ![](assets/PixelSRPG-Forge/asset-packs_clean-city_example.png) | ![](assets/PixelSRPG-Forge/asset-packs_farmlife_example-scene.png) | ![](assets/PixelSRPG-Forge/asset-packs_2d-pixel-dungeon_anim.gif) |
+| ![](previews/PixelSRPG-Forge/asset-packs_clean-city_example.png) | ![](previews/PixelSRPG-Forge/asset-packs_farmlife_example-scene.png) | ![](previews/PixelSRPG-Forge/asset-packs_2d-pixel-dungeon_anim.gif) |
 | **Sandstone Dungeons (preview)** | **Sandstone Dungeons (build)** | **Sandstone characters** |
-| ![](assets/PixelSRPG-Forge/buildings_sandstone-dungeons_package-preview.png) | ![](assets/PixelSRPG-Forge/buildings_sandstone-dungeons_build-phase05.png) | ![](assets/PixelSRPG-Forge/buildings_sandstone-dungeons_characters-part1.png) |
+| ![](previews/PixelSRPG-Forge/buildings_sandstone-dungeons_package-preview.png) | ![](previews/PixelSRPG-Forge/buildings_sandstone-dungeons_build-phase05.png) | ![](previews/PixelSRPG-Forge/buildings_sandstone-dungeons_characters-part1.png) |
 
-> ⚠️ Parte do conteúdo parece ser arte de terceiros redistribuída (ex.: Sandstone Dungeons by Kartoy, Pixel Adventure by Pixel Frog). Confira a licença de origem antes de usar comercialmente. Ícones MapleStory (Nexon) e o pacote de 31k ícones de revendedor foram deliberadamente **excluídos** desta curadoria.
+> ⚠️ Parte do conteúdo parece ser arte de terceiros redistribuída (ex.: Sandstone Dungeons by Kartoy, Pixel Adventure by Pixel Frog). Confira a licença de origem antes de usar comercialmente. Ícones MapleStory (Nexon) e o pacote de 31k ícones de revendedor foram deliberadamente **excluídos** desta curadoria (ver [VENDORED.md](VENDORED.md)).
 
 ---
 
@@ -82,7 +125,7 @@ Coleção de assets pixel art para SRPG: personagens, construções, terreno, in
 
 34 conceitos de game dev, cada um com demo animada, explicação curta e um **prompt bit**: uma frase pronta para colar no prompt da IA e obter o comportamento certo. Organizados em 4 capítulos: 3D & rendering, Game feel, Systems e Performance.
 
-➡️ **[Índice completo com miniaturas](gamedev-cheatsheet/README.md)**
+➡️ **[Índice completo com miniaturas](gamedev-cheatsheet/README.md)** · demos interativas offline: `scripts/serve.sh cheatsheet`
 
 ### 3D & rendering
 
@@ -162,6 +205,7 @@ Coleção de assets pixel art para SRPG: personagens, construções, terreno, in
 
 ## Créditos e licenças
 
-- Cada repositório citado pertence a seus autores e segue a própria licença (todos declaram MIT). Imagens em [`assets/`](assets/) vêm dos READMEs, do próprio repo ou da página itch.io do projeto; origem de cada arquivo em [`assets/SOURCES.md`](assets/SOURCES.md).
+- Origem, commit fixado e alterações de cada cópia em [`VENDORED.md`](VENDORED.md). Cada pasta em `repos/` mantém o `LICENSE` original.
+- Cada repositório citado pertence a seus autores e segue a própria licença (todos declaram MIT). Imagens em [`previews/`](previews/) vêm dos READMEs, do próprio repo ou da página itch.io do projeto; origem de cada arquivo em [`previews/SOURCES.md`](previews/SOURCES.md).
 - Screenshots do Pixel Planet Generator vêm de [deep-fold.itch.io](https://deep-fold.itch.io/pixel-planet-generator), sem licença declarada para as imagens.
 - O conteúdo de [`gamedev-cheatsheet/`](gamedev-cheatsheet/) (textos, prompt bits e capturas das demos) é de **Nicolas Zullo** ([gamedev-cheatsheet.com](https://gamedev-cheatsheet.com/), [@NicolasZu](https://x.com/NicolasZu)), espelhado aqui para referência pessoal. O site não declara licença: peça permissão ao autor antes de tornar este repositório público.

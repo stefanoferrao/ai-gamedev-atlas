@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Texture atlas Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet</title>
+    <meta name="description" content="Use an atlas to let sprites share one texture binding. Each sprite stores a rectangle in UV space, while the material and draw order still determine whether sprites can share a batch." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+
+    <meta name="google-site-verification" content="ywt33Tr3Vdd1dW8deBktVeFzcmp7OYgQj49ARpMsWlY" />
+    <meta property="og:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta property="og:image:alt" content="Game development concepts with interactive visual examples" />
+    <meta name="twitter:image" content="https://gamedev-cheatsheet.com/og.jpg" />
+    <meta name="twitter:creator" content="@NicolasZu" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Texture atlas Explained: Example &amp; Common Mistakes | Game Dev Cheat Sheet" />
+    <meta property="og:description" content="Use an atlas to let sprites share one texture binding. Each sprite stores a rectangle in UV space, while the material and draw order still determine whether sprites can share a batch." />
+    <link rel="canonical" href="https://gamedev-cheatsheet.com/concepts/texture-atlas/" />
+    <meta property="og:url" content="https://gamedev-cheatsheet.com/concepts/texture-atlas/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#07070b" />
+    <script type="module" crossorigin src="/assets/main-BnLIw7Rw.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+    <link rel="stylesheet" crossorigin href="/assets/main-D-IG9H1k.css">
+  <link rel="preload" href="/assets/geist-latin-wght-normal-Dm3htQBi.woff2" as="font" type="font/woff2" crossorigin /><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Texture atlas in game development","description":"A texture atlas packs many small images into one large texture, and each sprite keeps the UV rectangle of its own region. The GPU has to start a new batch every time the bound texture changes, so these 24 sprites cost 22 draw calls when each of the 6 sprite types has its own texture. Packed into one atlas, the same 24 sprites in the same order draw in 1 call.","url":"https://gamedev-cheatsheet.com/concepts/texture-atlas/","image":"https://gamedev-cheatsheet.com/og.jpg","author":{"@type":"Person","name":"Nicolas Zullo","url":"https://gamedev-cheatsheet.com/about/"},"mainEntityOfPage":"https://gamedev-cheatsheet.com/concepts/texture-atlas/"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Game Dev Cheat Sheet","item":"https://gamedev-cheatsheet.com/"},{"@type":"ListItem","position":2,"name":"Texture atlas","item":"https://gamedev-cheatsheet.com/concepts/texture-atlas/"}]}]}</script></head>
+  <body>
+    <header class="bar">
+      <div class="bar__inner">
+        <a class="logo" href="/">
+          <span class="logo__mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          Game dev cheat sheet
+        </a>
+        <nav class="bar__nav" id="nav" aria-label="Chapters"><a data-category="3d" href="/#chapter-3d">3D &amp; rendering</a><a data-category="feel" href="/#chapter-feel">Game feel</a><a data-category="systems" href="/#chapter-systems">Systems</a><a data-category="perf" href="/#chapter-perf">Performance</a></nav>
+        <a class="bar__link" href="/#newsletter">Get updates ↗</a>
+      </div>
+    </header>
+
+    <main class="concept-page"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Cheat sheet</a><span>›</span><a href="/#chapter-perf">Performance</a><span>›</span><span>Texture atlas</span></nav><header class="concept-heading"><p class="hero__kicker">Performance</p><h1>Texture atlas in game development</h1><p>one texture, one draw call</p></header><div class="concept-layout"><div><article class="card card--detail" id="texture-atlas" data-slug="texture-atlas" data-module="texture-atlas.ts" data-category="perf"><div class="card__stage"><canvas role="img" aria-label="Texture atlas: one texture, one draw call"></canvas><span class="demo-caption">Interactive example · scroll or point here to play</span></div><div class="card__body"><span class="card__num">33</span><p class="card__tagline">one texture, one draw call</p><p class="card__text">A texture atlas packs many small images into one large texture, and each sprite keeps the UV rectangle of its own region. The GPU has to start a new batch every time the bound texture changes, so these 24 sprites cost 22 draw calls when each of the 6 sprite types has its own texture. Packed into one atlas, the same 24 sprites in the same order draw in 1 call.</p><div class="prompt"><div class="prompt__head"><span class="prompt__label">prompt bit</span><button type="button" class="prompt__copy" aria-label="Copy Texture atlas prompt">Copy</button></div><code class="prompt__code">Pack the sprites into one texture atlas, for example 2048 by 2048 with 2 px of padding around each sprite, store each sprite&#39;s UV rectangle in a JSON file, and draw every sprite that shares the atlas and shader in a single batch.</code></div></div></article></div><div class="concept-guide"><section><h2>When to use it</h2><p>Use an atlas to let sprites share one texture binding. Each sprite stores a rectangle in UV space, while the material and draw order still determine whether sprites can share a batch.</p></section><section><h2>Implementation example</h2><p class="example-note">Engine-neutral pseudocode. Adapt the functions and coordinate conventions to your engine.</p><pre><code>uvMin = sprite.pixelMin / atlasSize
+uvMax = sprite.pixelMax / atlasSize
+uv = mix(uvMin, uvMax, quadUV)
+color = sample(atlas, uv)</code></pre></section><section><h2>Common mistakes</h2><p>Texture filtering and mipmaps can sample neighboring sprites. Extrude border pixels and leave enough padding for the mip levels you use; two pixels is not a universal guarantee.</p></section></div></div><section class="related"><h2>Related concepts</h2><div><a href="/concepts/draw-calls/"><strong>Draw calls</strong><span>one call, four hundred crates</span></a><a href="/concepts/fragment-shader/"><strong>Fragment shader</strong><span>a tiny program per pixel</span></a><a href="/concepts/particle-system/"><strong>Particle system</strong><span>one emitter, many short lives</span></a></div></section><p class="byline">Maintained by <a href="/about/">Nicolas Zullo</a> · <a href="https://x.com/NicolasZu" data-track="follow_x" target="_blank" rel="noopener noreferrer">Follow on X ↗</a></p></main>
+
+    <footer class="site-footer"><div><strong>Keep learning with Nicolas</strong><p>New concepts, visual explanations, and game development notes.</p><a class="follow-link" data-track="follow_x" href="https://x.com/NicolasZu" target="_blank" rel="noopener noreferrer">Follow @NicolasZu on X ↗</a></div><nav aria-label="Site information"><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/#newsletter">Email updates</a><a href="/#top">Back to top ↑</a></nav></footer>
+  </body>
+</html>
