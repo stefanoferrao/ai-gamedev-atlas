@@ -1,8 +1,8 @@
 # AI GameDev Atlas
 
-Atlas visual de referências para criar jogos **2D com IA**: ferramentas, pacotes de pixel art, geradores e um glossário animado de 34 conceitos de game dev com _prompt bits_ prontos para colar no seu assistente de código.
+Atlas visual de referências para criar jogos **2D com IA**: ferramentas, pacotes de pixel art, geradores, 134 projetos do Pixel Composer e um glossário animado de 34 conceitos de game dev com _prompt bits_ prontos para colar no seu assistente de código.
 
-> Curadoria pessoal de [stefanoferrao](https://github.com/stefanoferrao). Reúne os itens da lista de stars [2D - IA Game Design](https://github.com/stars/stefanoferrao/lists/2d-ia-game-design) e o [Game Dev Cheat Sheet](https://gamedev-cheatsheet.com/).
+> Curadoria pessoal de [stefanoferrao](https://github.com/stefanoferrao). Reúne os itens da lista de stars [2D - IA Game Design](https://github.com/stars/stefanoferrao/lists/2d-ia-game-design) , os [showcases do Pixel Composer](https://pixel-composer.com/showcases.html) e o [Game Dev Cheat Sheet](https://gamedev-cheatsheet.com/).
 
 ## Sumário
 
@@ -13,6 +13,7 @@ Atlas visual de referências para criar jogos **2D com IA**: ferramentas, pacote
   - [SpriteFusion Sprite Normals — normal maps para sprites](#spritefusion-sprite-normals)
   - [Pixel Planets (Godot 4) — gerador de planetas](#pixel-planets-godot-4)
   - [PixelSRPG-Forge — pacote de assets SRPG](#pixelsrpg-forge)
+- [Pixel Composer — 134 projetos de VFX e pixel art](#pixel-composer)
 - [Game Dev Cheat Sheet — 34 conceitos animados](#game-dev-cheat-sheet)
 - [Créditos e licenças](#créditos-e-licenças)
 
@@ -29,6 +30,10 @@ ai-gamedev-atlas/
 │   ├── spritefusion-sprite-normals/  # CLI Rust de normal maps
 │   ├── pixel-planets-godot4/      #   projeto Godot 4 com shaders de planetas
 │   └── PixelSRPG-Forge/           #   assets pixel art, zips já extraídos
+├── pixel-composer/
+│   ├── README.md                  # galeria dos 134 projetos
+│   ├── projects/<Projeto>/        # arquivo .pxc + miniaturas originais
+│   └── media/                     # miniaturas ampliadas 4× + contact sheet
 ├── gamedev-cheatsheet/
 │   ├── README.md                  # índice dos 34 conceitos
 │   ├── <conceito>.md              # texto, prompt bit, pseudocódigo, erros comuns
@@ -38,6 +43,7 @@ ai-gamedev-atlas/
 ├── scripts/
 │   ├── serve.sh                   # sobe cheatsheet ou galeria pixelfx localmente
 │   ├── update-vendor.sh           # atualiza repos/ a partir do upstream
+│   ├── pxc_previews.py            # regenera mídia do Pixel Composer
 │   └── unzip_safe.py
 ├── VENDORED.md                    # origem, commit e licença de cada cópia
 └── CHANGELOG.md                   # notas de atualização (releases)
@@ -55,6 +61,7 @@ ai-gamedev-atlas/
 | Gerar normal map de um sprite | `cd repos/spritefusion-sprite-normals && cargo install --path . --locked` (ver README do repo) |
 | Usar planetas no Godot 4 | abra `repos/pixel-planets-godot4/project.godot` no Godot 4 |
 | Usar assets de SRPG | arraste as pastas de `repos/PixelSRPG-Forge/` para o projeto (Godot, Unity, SRPG Studio) |
+| Estudar/remixar um VFX em nós | abra `pixel-composer/projects/<Projeto>/*.pxc` no [Pixel Composer](https://pixel-composer.com/) |
 | Atualizar tudo do upstream | `scripts/update-vendor.sh` (ou `scripts/update-vendor.sh pixelfx`) e revise o `git diff` |
 
 ---
@@ -118,6 +125,20 @@ Coleção de assets pixel art para SRPG: personagens, construções, terreno, in
 | ![](previews/PixelSRPG-Forge/buildings_sandstone-dungeons_package-preview.png) | ![](previews/PixelSRPG-Forge/buildings_sandstone-dungeons_build-phase05.png) | ![](previews/PixelSRPG-Forge/buildings_sandstone-dungeons_characters-part1.png) |
 
 > ⚠️ Parte do conteúdo parece ser arte de terceiros redistribuída (ex.: Sandstone Dungeons by Kartoy, Pixel Adventure by Pixel Frog). Confira a licença de origem antes de usar comercialmente. Ícones MapleStory (Nexon) e o pacote de 31k ícones de revendedor foram deliberadamente **excluídos** desta curadoria (ver [VENDORED.md](VENDORED.md)).
+
+---
+
+## Pixel Composer
+
+📁 **Local: [`pixel-composer/`](pixel-composer/)** · origem [pixel-composer.com/showcases](https://pixel-composer.com/showcases.html) · app [Ttanasart-pt/Pixel-Composer](https://github.com/Ttanasart-pt/Pixel-Composer) (MIT)
+
+[Pixel Composer](https://pixel-composer.com/) é um editor **node-based** de VFX e pixel art de MakhamDev. Os 134 projetos oficiais estão aqui com o arquivo **`.pxc`** (o grafo completo, pronto para abrir e remixar) e as miniaturas. É uma ótima biblioteca de receitas de fogo, magia, água, portais, cenários e itens.
+
+<table><tr><td align="center"><img src="pixel-composer/media/spiral-fireball.gif" width="128" alt="Spiral Fireball"><br><sub>Spiral Fireball</sub></td><td align="center"><img src="pixel-composer/media/fire-tornado.gif" width="128" alt="Fire Tornado"><br><sub>Fire Tornado</sub></td><td align="center"><img src="pixel-composer/media/black-hole.gif" width="128" alt="Black Hole"><br><sub>Black Hole</sub></td><td align="center"><img src="pixel-composer/media/spark-bolt.gif" width="128" alt="Spark Bolt"><br><sub>Spark Bolt</sub></td><td align="center"><img src="pixel-composer/media/portal-cream.gif" width="128" alt="Portal Cream"><br><sub>Portal Cream</sub></td><td align="center"><img src="pixel-composer/media/fountain.gif" width="128" alt="Fountain"><br><sub>Fountain</sub></td></tr><tr><td align="center"><img src="pixel-composer/media/dragon.gif" width="128" alt="Dragon"><br><sub>Dragon</sub></td><td align="center"><img src="pixel-composer/media/lava-floor.gif" width="128" alt="Lava Floor"><br><sub>Lava Floor</sub></td><td align="center"><img src="pixel-composer/media/coral-reef.gif" width="128" alt="Coral Reef"><br><sub>Coral Reef</sub></td><td align="center"><img src="pixel-composer/media/morphing-gem.gif" width="128" alt="Morphing Gem"><br><sub>Morphing Gem</sub></td><td align="center"><img src="pixel-composer/media/underwater-view.gif" width="128" alt="Underwater View"><br><sub>Underwater View</sub></td><td align="center"><img src="pixel-composer/media/rocket-thrust.gif" width="128" alt="Rocket Thrust"><br><sub>Rocket Thrust</sub></td></tr></table>
+
+![Pixel Composer: 134 projetos](pixel-composer/media/contact-sheet.png)
+
+➡️ **[Galeria completa com links para cada .pxc](pixel-composer/README.md)**
 
 ---
 
@@ -208,4 +229,5 @@ Coleção de assets pixel art para SRPG: personagens, construções, terreno, in
 - Origem, commit fixado e alterações de cada cópia em [`VENDORED.md`](VENDORED.md). Cada pasta em `repos/` mantém o `LICENSE` original.
 - Cada repositório citado pertence a seus autores e segue a própria licença (todos declaram MIT). Imagens em [`previews/`](previews/) vêm dos READMEs, do próprio repo ou da página itch.io do projeto; origem de cada arquivo em [`previews/SOURCES.md`](previews/SOURCES.md).
 - Screenshots do Pixel Planet Generator vêm de [deep-fold.itch.io](https://deep-fold.itch.io/pixel-planet-generator), sem licença declarada para as imagens.
+- Projetos e miniaturas em [`pixel-composer/`](pixel-composer/) são de **MakhamDev** ([pixel-composer.com](https://pixel-composer.com/)), distribuídos gratuitamente no site e sem licença declarada para os `.pxc`. O app Pixel Composer é MIT.
 - O conteúdo de [`gamedev-cheatsheet/`](gamedev-cheatsheet/) (textos, prompt bits e capturas das demos) é de **Nicolas Zullo** ([gamedev-cheatsheet.com](https://gamedev-cheatsheet.com/), [@NicolasZu](https://x.com/NicolasZu)), espelhado aqui para referência pessoal. O site não declara licença: peça permissão ao autor antes de tornar este repositório público.

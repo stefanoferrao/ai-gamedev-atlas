@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.1.0] - 2026-11-01
+
+### ✨ Novidades
+
+- **Nova seção `pixel-composer/`** com os **134 projetos oficiais** de [Pixel Composer](https://pixel-composer.com/showcases.html), o editor node-based de VFX e pixel art de MakhamDev.
+  - `projects/<Projeto>/`: o arquivo **`.pxc`** (grafo de nós completo, abre direto no Pixel Composer) e as miniaturas originais.
+  - `media/`: miniaturas ampliadas 4× com nearest-neighbor (40 animadas) e um contact sheet com os 134 projetos.
+  - `README.md`: galeria com animados e estáticos, cada um com link para o seu `.pxc`, e o passo a passo para abrir.
+- **README principal**: nova seção com 12 VFX animados em destaque (fireball, fire tornado, black hole, portal…) e o contact sheet.
+- **`scripts/pxc_previews.py`**: regenera a mídia ampliada e o contact sheet a partir de `pixel-composer/items.json`.
+- `VENDORED.md`, a seção "Estrutura", a tabela "Como usar" e "Créditos" foram atualizados.
+
+### ℹ️ Notas
+
+- O app Pixel Composer (repositório de 1,5 GB, MIT) **não** foi copiado, só tem link. Instale pela [Steam](https://store.steampowered.com/app/2299510/Pixel_Composer/) ou pelo [itch.io](https://makham.itch.io/pixel-composer).
+- Os projetos `.pxc` são distribuídos gratuitamente por MakhamDev, mas sem licença declarada. Confira com o autor antes de tornar o repositório público.
+
 ## [1.0.0] - 2026-11-01
 
 Atlas visual de referências para criar jogos 2D com IA. Esta versão deixa **tudo dentro do repositório**: código, assets, demos e textos. Nada depende de links externos para funcionar.
